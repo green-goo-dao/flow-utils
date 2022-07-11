@@ -8,3 +8,4 @@ Utility contracts for flow blockchain smart contracts
 ## StringUtils
 
 - split - Split a string into an array by a provided delimiter
+- join - Join an array of strings with a provided separator between them
