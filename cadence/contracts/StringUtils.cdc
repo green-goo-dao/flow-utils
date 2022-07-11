@@ -19,4 +19,12 @@ pub contract StringUtils {
 
         return segments
     }
+
+    pub fun join(strs: [String], separator: String): String {
+        var joinedStr = ""
+        for str in strs {
+            joinedStr = joinedStr.concat(str).concat(separator)
+        }
+        return joinedStr.slice(from: 0, upTo: joinedStr.length - separator.length)
+    }
 }

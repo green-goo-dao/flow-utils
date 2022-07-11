@@ -31,6 +31,13 @@ describe("StringUtils tests", () => {
         }
     }
 
+    const cadenceJoinEqualsJSJoin = async (strs, separator) => {
+        const [res, err] = await executeScript("join-strings", [strs, separator])
+        expect(err).toBe(null)
+        const expected = strs.join(separator)
+        expect(res).toBe(expected)
+    }
+
     test("Split string", async () => {
         await cadenceSplitEqualsJSSplit("this is a string", " ")
         await cadenceSplitEqualsJSSplit("this.is.a string.", ".")
@@ -40,5 +47,13 @@ describe("StringUtils tests", () => {
         await cadenceSplitEqualsJSSplit("❓❓❓❓❓❓❓", " ")
         await cadenceSplitEqualsJSSplit("❓❓❓❓❓❓❓", "❓")
         await cadenceSplitEqualsJSSplit("some random stuff ❓ here ❓ ❓ ❓", "❓")
+    })
+
+    test("Join string", async () => {
+        await cadenceJoinEqualsJSJoin(["a","b","c","d"], ",")
+        await cadenceJoinEqualsJSJoin(["a","b","c","d"], "a")
+        await cadenceJoinEqualsJSJoin(["a","b","c","d"], "")
+        await cadenceJoinEqualsJSJoin(["abcd","","","dwda"], "foobarbaz")
+        await cadenceJoinEqualsJSJoin(["abcd","","❓","dwda"], "❓")
     })
 })
