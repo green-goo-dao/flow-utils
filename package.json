@@ -1,0 +1,34 @@
+{
+  "name": "flow-utils",
+  "version": "1.0.0",
+  "description": "A series of helper contracts that provide utilities for contracts, transactions, and scripts on the Flow blockchain",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flowtyio/flow-utils.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flowtyio/flow-utils/issues"
+  },
+  "homepage": "https://github.com/Flowtyio/flow-utils#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.0",
+    "@babel/preset-env": "^7.18.0",
+    "babel-jest": "^28.1.0",
+    "flow-js-testing": "^0.2.3-alpha.6",
+    "jest": "^28.1.0",
+    "jest-environment-node": "^28.1.0"
+  },
+  "dependencies": {
+    "fcl-gcp-kms-authorizer": "^0.0.1-b"
+  }
+}
