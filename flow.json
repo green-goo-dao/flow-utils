@@ -1,0 +1,47 @@
+{
+  "emulators": {
+	"default": {
+	  "port": 3569,
+	  "serviceAccount": "emulator-account"
+	}
+  },
+  "contracts": {
+	"LostAndFound": "./cadence/contracts/StringUtils.cdc"
+  },
+  "networks": {
+	"emulator": "127.0.0.1:3569",
+	"mainnet": "access.mainnet.nodes.onflow.org:9000",
+	"testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+	"emulator-account": {
+	  "address": "f8d6e0586b0a20c7",
+	  "key": "f2e846bd4c1fbf17839ae59e111c6b1c98579eda7a841412f102d6621ec671cb"
+	},
+	"flow-utils-testnet": {
+	  "address": "0x31ad40c07a2a9788",
+	  "key": {
+		"type": "google-kms",
+		"index": 0,
+		"signatureAlgorithm": "ECDSA_P256",
+		"hashAlgorithm": "SHA2_256",
+		"resourceID": "projects/flow-utils/locations/us-west1/keyRings/testnet/cryptoKeys/testnet/cryptoKeyVersions/1"
+	  }
+	}
+  },
+  "deployments": {
+	"emulator": {
+	  "emulator-account": [
+		"FlowUtils"
+	  ]
+	},
+	"testnet": {
+	  "flow-utils-testnet": [
+		"StringUtils"
+	  ]
+	}
+  },
+  "emulatorAccounts": {
+	"emulator-account": "f8d6e0586b0a20c7"
+  }
+}
