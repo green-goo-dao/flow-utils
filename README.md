@@ -2,6 +2,7 @@
 Utility contracts for flow blockchain smart contracts
 
 |Network|Address|
+|-------|-------|
 |testnet|0x31ad40c07a2a9788|
 |mainnet|0xa340dc0a4ec828ab|
 
