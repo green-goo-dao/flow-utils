@@ -6,7 +6,7 @@
 	}
   },
   "contracts": {
-	"LostAndFound": "./cadence/contracts/StringUtils.cdc"
+	"StringUtils": "./cadence/contracts/StringUtils.cdc"
   },
   "networks": {
 	"emulator": "127.0.0.1:3569",
@@ -25,20 +25,35 @@
 		"index": 0,
 		"signatureAlgorithm": "ECDSA_P256",
 		"hashAlgorithm": "SHA2_256",
-		"resourceID": "projects/flow-utils/locations/us-west1/keyRings/testnet/cryptoKeys/testnet/cryptoKeyVersions/1"
+		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/testnet/cryptoKeyVersions/1"
+	  }
+	},
+	"flow-utils-mainnet": {
+	  "address": "0xa340dc0a4ec828ab",
+	  "key": {
+		"type": "google-kms",
+		"index": 0,
+		"signatureAlgorithm": "ECDSA_P256",
+		"hashAlgorithm": "SHA2_256",
+		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
 	  }
 	}
   },
   "deployments": {
 	"emulator": {
 	  "emulator-account": [
-		"FlowUtils"
+		"StringUtils"
 	  ]
 	},
 	"testnet": {
 	  "flow-utils-testnet": [
 		"StringUtils"
 	  ]
+	},
+	"mainnet": {
+		"flow-utils-mainnet": [
+		  "StringUtils"
+		]
 	}
   },
   "emulatorAccounts": {
