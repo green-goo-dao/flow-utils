@@ -28,3 +28,11 @@ pub contract StringUtils {
         return joinedStr.slice(from: 0, upTo: joinedStr.length - separator.length)
     }
 }
+    pub fun explode(_ s: String): [String]{
+        var chars : [String] =  []
+        for i in range(0, s.length){
+            chars.append(s[i].toString())
+        }  
+        return chars
+    }
+
