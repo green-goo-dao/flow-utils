@@ -4,14 +4,14 @@ pub contract StringUtils {
    
     pub fun explode(_ s: String): [String]{
         var chars : [String] =  []
-        for i in range(0, s.length){
+        for i in ArrayUtils.range(0, s.length){
             chars.append(s[i].toString())
         }  
         return chars
     }
 
     pub fun trimLeft(_ s: String): String{
-        for i in range(0, s.length){
+        for i in ArrayUtils.range(0, s.length){
             if s[i] != " "{
                 return s.slice(from: i, upTo: s.length)
             }
@@ -20,7 +20,7 @@ pub contract StringUtils {
     }
 
     pub fun trimRight(_ s:  String): String{
-        for i in rrange(s.length-1, -1){
+        for i in ArrayUtils.rrange(s.length-1, -1){
             if s[i] != " "{
                 return s.slice(from: 0, upTo: i+1)
             }
@@ -45,7 +45,7 @@ pub contract StringUtils {
     }
 
     pub fun index(_ s : String, _ substr : String, _ startIndex: Int): Int?{
-        for i in range(startIndex,s.length-substr.length+1){
+        for i in ArrayUtils.range(startIndex,s.length-substr.length+1){
             if s[i]==substr[0] && s.slice(from:i, upTo:i+substr.length) == substr{
                 return i
             }
