@@ -36,3 +36,25 @@ pub contract StringUtils {
         return chars
     }
 
+    pub fun trimLeft(_ s: String): String{
+        for i in range(0, s.length){
+            if s[i] != " "{
+                return s.slice(from: i, upTo: s.length)
+            }
+        }
+        return ""
+    }
+
+    pub fun trimRight(_ s:  String): String{
+        for i in rrange(s.length-1, -1){
+            if s[i] != " "{
+                return s.slice(from: 0, upTo: i+1)
+            }
+        }
+        return ""
+    }
+
+    pub fun trim(_ s: String): String{
+        return trimRight(trimLeft(s))
+    }
+
