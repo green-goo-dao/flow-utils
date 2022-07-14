@@ -51,6 +51,11 @@ pub contract ScopedProviders {
         }
     }
 
+    // ScopedFungibleTokenProvider
+    //
+    // A ScopedFungibleTokenProvider is only permitted to withdraw up to a
+    // certain amount of tokens. This allowance is deducted upon each withdraw
+    // and will fail if an attempt to withdraw is made that would surpass the limit.
     pub struct ScopedFungibleTokenProvider {
         access(self) let provider: Capability<&{FungibleToken.Provider}>
         pub var allowance: UFix64
@@ -66,7 +71,7 @@ pub contract ScopedProviders {
             return self.provider.check()
         }
 
-        pub fun Withdraw(amount: UFix64): @FungibleToken.Vault {
+        pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
             pre {
                 amount + self.allowanceUsed <= self.allowance: "exceeds max allowance"
             }
