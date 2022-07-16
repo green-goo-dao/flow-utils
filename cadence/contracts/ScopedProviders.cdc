@@ -33,20 +33,20 @@ pub contract ScopedProviders {
         }
 
         pub fun canWithdraw(_ id: UInt64): Bool {
-            return self.ids[id] == true
+            return self.ids.containsKey(id)
         }
 
         pub fun check(): Bool {
             return self.provider.check()
         }
 
-        pub fun withdraw(_ id: UInt64): @NonFungibleToken.NFT {
+        pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
             pre {
-                self.canWithdraw(id): "id is not enabled for withdraw"
+                self.canWithdraw(withdrawID) == true: "id is not enabled for withdraw"
             }
 
-            let nft <- self.provider.borrow()!.withdraw(withdrawID: id)
-            self.ids.remove(key: id)
+            let nft <- self.provider.borrow()!.withdraw(withdrawID: withdrawID)
+            self.ids.remove(key: withdrawID)
             return <-nft
         }
     }
@@ -69,6 +69,10 @@ pub contract ScopedProviders {
 
         pub fun check(): Bool {
             return self.provider.check()
+        }
+
+        pub fun canWithdraw(_ amount: UFix64): Bool {
+            return amount + self.allowanceUsed <= self.allowance
         }
 
         pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
