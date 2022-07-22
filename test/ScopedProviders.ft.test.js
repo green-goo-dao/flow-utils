@@ -36,6 +36,22 @@ describe("ScopedFungibleToken tests", () => {
         expect(Number(tx.events[0].data.amount)).toBe(allowance)
     })
 
+    it("should withdraw tokens successfully with expiration", async () => {
+        const tokenAmount = 100.0
+        const allowance = 10.0
+        const amount = await mintExampleTokens(alice, tokenAmount)
+        expect(tokenAmount).toBe(amount)
+
+        const [tx, err] = await sendTransaction({
+            name: "scopedproviders/ft/withdraw_scoped_ft_before_expiration",
+            args: [allowance, allowance],
+            signers: [alice]
+        })
+        expect(err).toBe(null)
+        expect(tx.events[0].type).toBe(`A.${exampleTokenAdmin.substring(2)}.ExampleToken.TokensWithdrawn`)
+        expect(Number(tx.events[0].data.amount)).toBe(allowance)
+    })
+
     it("should not withdraw more than allowance", async () => {
         const tokenAmount = 100.0
         const allowance = 10.0
@@ -48,6 +64,21 @@ describe("ScopedFungibleToken tests", () => {
             signers: [alice]
         })
         expect(err.includes("not able to withdraw")).toBe(true)
+    })
+
+    it("should not withdraw past expiration", async () => {
+        const tokenAmount = 100.0
+        const allowance = 10.0
+        const amount = await mintExampleTokens(alice, tokenAmount)
+        expect(tokenAmount).toBe(amount)
+
+        const [tx, err] = await sendTransaction({
+            name: "scopedproviders/ft/withdraw_scoped_ft_past_expiration",
+            args: [allowance, 1],
+            signers: [alice]
+        })
+        expect(err.includes("provider has expired")).toBe(true)
+        expect(tx).toBe(null)
     })
 
     it("should withdraw twice under balance", async () => {

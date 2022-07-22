@@ -11,13 +11,12 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
 
         let cap = acct.getCapability<&{NonFungibleToken.Provider}>(providerPath)
         assert(cap.check(), message: "invalid private cap")
-        let scopedProvider <- ScopedProviders.createScopedNFTProvider(provider: cap, ids: ids, expiration: nil)
+        let expiration = getCurrentBlock().timestamp - 1000.0
+        let scopedProvider <- ScopedProviders.createScopedNFTProvider(provider: cap, ids: ids, expiration: expiration)
 
+        // this should fail!
         let nft <- scopedProvider.withdraw(withdrawID: withdrawID)
-        assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
-
-        // put it back!
-        acct.getCapability<&{NonFungibleToken.CollectionPublic}>(ExampleNFT.CollectionPublicPath).borrow()!.deposit(token: <-nft)
+        destroy nft
         destroy scopedProvider
     }
 }

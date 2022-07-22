@@ -11,7 +11,7 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
 
         let cap = acct.getCapability<&{NonFungibleToken.Provider}>(providerPath)
         assert(cap.check(), message: "invalid private cap")
-        let scopedProvider = ScopedProviders.ScopedNFTProvider(provider: cap, ids: ids)
+        let scopedProvider <- ScopedProviders.createScopedNFTProvider(provider: cap, ids: ids, expiration: nil)
 
         assert(scopedProvider.canWithdraw(withdrawID), message: "not able to withdraw")
         let nft <- scopedProvider.withdraw(withdrawID: withdrawID)
@@ -23,5 +23,6 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
         // this should fail!
         let secondAttempt <- scopedProvider.withdraw(withdrawID: withdrawID)
         destroy secondAttempt
+        destroy scopedProvider
     }
 }

@@ -11,14 +11,10 @@ transaction(allowance: UFix64, withdrawAmount: UFix64) {
 
         let cap = acct.getCapability<&AnyResource{FungibleToken.Provider}>(providerPath)
         assert(cap.check(), message: "invalid private cap")
-        let scopedProvider <- ScopedProviders.createScopedFungibleTokenProvider(provider: cap, allowance: allowance, expiration: nil)
-
-        assert(scopedProvider.canWithdraw(withdrawAmount), message: "not able to withdraw")
+        let expiration = getCurrentBlock().timestamp + 1000000.0
+        let scopedProvider <- ScopedProviders.createScopedFungibleTokenProvider(provider: cap, allowance: allowance, expiration: expiration)
         let tokens <- scopedProvider.withdraw(amount: withdrawAmount)
-        assert(!scopedProvider.canWithdraw(withdrawAmount), message: "still able to withdraw")
-
-        // put it back!
-        acct.getCapability<&{FungibleToken.Receiver}>(ExampleToken.ReceiverPath).borrow()!.deposit(from: <-tokens)
+        destroy tokens
         destroy scopedProvider
     }
 }

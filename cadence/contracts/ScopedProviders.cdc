@@ -19,12 +19,15 @@ pub contract ScopedProviders {
     // Wrapper around an NFT Provider that is restricted to specific ids.
     // Once the ID has been withdrawn, it is removed from the list so that it cannot
     // be used again. 
-    pub struct ScopedNFTProvider {
+    pub resource ScopedNFTProvider {
         access(self) let provider: Capability<&{NonFungibleToken.Provider}>
         pub let ids: {UInt64: Bool}
+        // block timestamp that this provider can no longer be used after
+        access(self) let expiration: UFix64?
 
-        pub init(provider: Capability<&{NonFungibleToken.Provider}>, ids: [UInt64]) {
+        pub init(provider: Capability<&{NonFungibleToken.Provider}>, ids: [UInt64], expiration: UFix64?) {
             self.provider = provider
+            self.expiration = expiration
 
             self.ids = {}
             for id in ids {
@@ -33,7 +36,7 @@ pub contract ScopedProviders {
         }
 
         pub fun canWithdraw(_ id: UInt64): Bool {
-            return self.ids.containsKey(id)
+            return self.ids.containsKey(id) && (self.expiration == nil || getCurrentBlock().timestamp <= self.expiration!)
         }
 
         pub fun check(): Bool {
@@ -42,7 +45,8 @@ pub contract ScopedProviders {
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
             pre {
-                self.canWithdraw(withdrawID) == true: "id is not enabled for withdraw"
+                self.ids.containsKey(withdrawID): "id is not enabled for withdraw"
+                self.expiration == nil || getCurrentBlock().timestamp <= self.expiration!: "provider has expired"
             }
 
             let nft <- self.provider.borrow()!.withdraw(withdrawID: withdrawID)
@@ -56,15 +60,19 @@ pub contract ScopedProviders {
     // A ScopedFungibleTokenProvider is only permitted to withdraw up to a
     // certain amount of tokens. This allowance is deducted upon each withdraw
     // and will fail if an attempt to withdraw is made that would surpass the limit.
-    pub struct ScopedFungibleTokenProvider {
+    pub resource ScopedFungibleTokenProvider {
         access(self) let provider: Capability<&{FungibleToken.Provider}>
         pub var allowance: UFix64
         pub var allowanceUsed: UFix64
 
-        pub init(provider: Capability<&{FungibleToken.Provider}>, allowance: UFix64) {
+        // block timestamp that this provider can no longer be used after
+        access(self) let expiration: UFix64?
+
+        pub init(provider: Capability<&{FungibleToken.Provider}>, allowance: UFix64, expiration: UFix64?) {
             self.provider = provider
             self.allowance = allowance
             self.allowanceUsed = 0.0
+            self.expiration = expiration
         }
 
         pub fun check(): Bool {
@@ -72,16 +80,33 @@ pub contract ScopedProviders {
         }
 
         pub fun canWithdraw(_ amount: UFix64): Bool {
-            return amount + self.allowanceUsed <= self.allowance
+            return amount + self.allowanceUsed <= self.allowance && (self.expiration == nil || getCurrentBlock().timestamp <= self.expiration!)
         }
 
         pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
             pre {
                 amount + self.allowanceUsed <= self.allowance: "exceeds max allowance"
+                self.expiration == nil || self.expiration! >= getCurrentBlock().timestamp: "provider has expired"
             }
 
             self.allowanceUsed = self.allowanceUsed + amount
             return <-self.provider.borrow()!.withdraw(amount: amount)
         }
+    }
+
+    pub fun createScopedNFTProvider(
+        provider: Capability<&{NonFungibleToken.Provider}>, 
+        ids: [UInt64], 
+        expiration: UFix64?
+    ): @ScopedNFTProvider {
+        return <- create ScopedNFTProvider(provider: provider, ids: ids, expiration: expiration)
+    }
+    
+    pub fun createScopedFungibleTokenProvider(
+        provider: Capability<&{FungibleToken.Provider}>, 
+        allowance: UFix64, 
+        expiration: UFix64?
+    ): @ScopedFungibleTokenProvider {
+        return <- create ScopedFungibleTokenProvider(provider: provider, allowance: allowance, expiration: expiration)
     }
 }

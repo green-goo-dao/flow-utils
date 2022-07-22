@@ -32,6 +32,18 @@ describe("ScopedNonFungibleTokenProvider tests", () => {
         expect(tx.events[0].data.id).toBe(id)
     })
 
+    it("should withdraw an nft successfully before expiration", async () => {
+        const id = await mintExampleNFT(alice)
+        const [tx, err] = await sendTransaction({
+            name: "scopedproviders/nft/withdraw_scoped_nft_before_expiration",
+            args: [[id], id],
+            signers: [alice]
+        })
+        expect(err).toBe(null)
+        expect(tx.events[0].type).toBe(`A.${exampleNFTAdmin.substring(2)}.ExampleNFT.Withdraw`)
+        expect(tx.events[0].data.id).toBe(id)
+    })
+
     it("should fail to withdraw an nft", async () => {
         const id = await mintExampleNFT(alice)
         const [tx, err] = await sendTransaction({
@@ -41,6 +53,17 @@ describe("ScopedNonFungibleTokenProvider tests", () => {
         })
         expect(tx).toBe(null)
         expect(err.includes("id is not enabled for withdraw")).toBe(true)
+    })
+
+    it("should fail to withdraw an nft past expiration", async () => {
+        const id = await mintExampleNFT(alice)
+        const [tx, err] = await sendTransaction({
+            name: "scopedproviders/nft/withdraw_scoped_nft_past_expiration",
+            args: [[id], id],
+            signers: [alice]
+        })
+        expect(tx).toBe(null)
+        expect(err.includes("provider has expired")).toBe(true)
     })
 
     it("should be able to withdraw", async () => {
