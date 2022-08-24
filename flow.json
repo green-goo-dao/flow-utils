@@ -1,17 +1,18 @@
 {
   "emulators": {
-	"default": {
-	  "port": 3569,
-	  "serviceAccount": "emulator-account"
-	}
+		"default": {
+			"port": 3569,
+			"serviceAccount": "emulator-account"
+		}
   },
   "contracts": {
-	"StringUtils": "./cadence/contracts/StringUtils.cdc"
+		"ArrayUtils": "./cadence/contracts/ArrayUtils.cdc",
+		"StringUtils": "./cadence/contracts/StringUtils.cdc"
   },
   "networks": {
-	"emulator": "127.0.0.1:3569",
-	"mainnet": "access.mainnet.nodes.onflow.org:9000",
-	"testnet": "access.devnet.nodes.onflow.org:9000"
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
   },
   "accounts": {
 	"emulator-account": {
@@ -21,42 +22,45 @@
 	"flow-utils-testnet": {
 	  "address": "0x31ad40c07a2a9788",
 	  "key": {
-		"type": "google-kms",
-		"index": 0,
-		"signatureAlgorithm": "ECDSA_P256",
-		"hashAlgorithm": "SHA2_256",
-		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/testnet/cryptoKeyVersions/1"
+			"type": "google-kms",
+			"index": 0,
+			"signatureAlgorithm": "ECDSA_P256",
+			"hashAlgorithm": "SHA2_256",
+			"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/testnet/cryptoKeyVersions/1"
 	  }
 	},
 	"flow-utils-mainnet": {
 	  "address": "0xa340dc0a4ec828ab",
 	  "key": {
-		"type": "google-kms",
-		"index": 0,
-		"signatureAlgorithm": "ECDSA_P256",
-		"hashAlgorithm": "SHA2_256",
-		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
+			"type": "google-kms",
+			"index": 0,
+			"signatureAlgorithm": "ECDSA_P256",
+			"hashAlgorithm": "SHA2_256",
+			"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
 	  }
 	}
   },
   "deployments": {
 	"emulator": {
 	  "emulator-account": [
-		"StringUtils"
+			"ArrayUtils",
+			"StringUtils"
 	  ]
 	},
 	"testnet": {
 	  "flow-utils-testnet": [
-		"StringUtils"
+			"ArrayUtils",
+			"StringUtils"
 	  ]
 	},
 	"mainnet": {
 		"flow-utils-mainnet": [
+			"ArrayUtils",
 		  "StringUtils"
 		]
 	}
   },
   "emulatorAccounts": {
-	"emulator-account": "f8d6e0586b0a20c7"
+		"emulator-account": "f8d6e0586b0a20c7"
   }
 }
