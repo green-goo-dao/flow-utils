@@ -9,7 +9,6 @@ import {
 // Increase timeout if your tests failing due to timeout
 jest.setTimeout(10000);
 
-
 describe("ScopedFungibleToken tests", () => {
     beforeEach(async () => {
         await before()

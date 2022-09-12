@@ -1,7 +1,7 @@
 import FungibleToken from "../../../../cadence/contracts/FungibleToken.cdc"
 import ExampleToken from "../../../../cadence/contracts/ExampleToken.cdc"
 
-import ScopedProviders from "../../../../cadence/contracts/ScopedProviders.cdc"
+import ScopedFTProviders from "../../../../cadence/contracts/ScopedFTProviders.cdc"
 
 transaction(allowance: UFix64, withdrawAmount: UFix64) {
     prepare(acct: AuthAccount) {
@@ -11,7 +11,9 @@ transaction(allowance: UFix64, withdrawAmount: UFix64) {
 
         let cap = acct.getCapability<&AnyResource{FungibleToken.Provider}>(providerPath)
         assert(cap.check(), message: "invalid private cap")
-        let scopedProvider <- ScopedProviders.createScopedFungibleTokenProvider(provider: cap, allowance: allowance, expiration: nil)
+
+        let filter = ScopedFTProviders.AllowanceFilter(allowance)
+        let scopedProvider <- ScopedFTProviders.createScopedFTProvider(provider: cap, filters: [filter], expiration: nil)
 
         assert(scopedProvider.canWithdraw(withdrawAmount), message: "not able to withdraw")
         let tokens <- scopedProvider.withdraw(amount: withdrawAmount)
