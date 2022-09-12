@@ -18,6 +18,7 @@ export const setup = async () => {
 
     flowUtils = await getAccountAddress("FlowUtils")
 
+    await deployContractByName({name: "ArrayUtils", to: flowUtils, update: true})
     await deployContractByName({name: "StringUtils", to: flowUtils, update: true})
 }
 
