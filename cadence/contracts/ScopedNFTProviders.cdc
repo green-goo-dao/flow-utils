@@ -32,7 +32,7 @@ pub struct interface NFTFilter {
         }
 
         pub fun canWithdraw(_ nft: &NonFungibleToken.NFT): Bool {
-            return self.ids.containsKey(nft.id)
+            return self.ids[nft.id] != nil && self.ids[nft.id] == true
         }
 
         pub fun markWithdrawn(_ nft: &NonFungibleToken.NFT) {
@@ -60,7 +60,7 @@ pub struct interface NFTFilter {
         }
 
         pub fun canWithdraw(_ nft: &NonFungibleToken.NFT): Bool {
-            return self.uuids.containsKey(nft.uuid)
+            return self.uuids[nft.uuid] != nil && self.uuids[nft.uuid]! == true
         }
 
         pub fun markWithdrawn(_ nft: &NonFungibleToken.NFT) {
@@ -96,10 +96,12 @@ pub struct interface NFTFilter {
                 return false
             }
 
-            for f in self.filters {
-                if !f.canWithdraw(nft) {
+            var i = 0
+            while i < self.filters.length {
+                if !self.filters[i].canWithdraw(nft) {
                     return false
                 }
+                i = i + 1
             }
             return true
         }
@@ -115,12 +117,15 @@ pub struct interface NFTFilter {
 
             let nft <- self.provider.borrow()!.withdraw(withdrawID: withdrawID)
             let ref = &nft as &NonFungibleToken.NFT
-            for f in self.filters {
-                if !f.canWithdraw(ref) {
-                    panic(StringUtils.join(["cannot withdraw nft. filter of type", f.getType().identifier, "failed."], " "))
+
+            var i = 0
+            while i < self.filters.length {
+                if !self.filters[i].canWithdraw(ref) {
+                    panic(StringUtils.join(["cannot withdraw nft. filter of type", self.filters[i].getType().identifier, "failed."], " "))
                 }
 
-                f.markWithdrawn(ref)
+                self.filters[i].markWithdrawn(ref)
+                i = i + 1
             }
 
             return <-nft

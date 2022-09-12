@@ -16,10 +16,11 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
         let scopedProvider <- ScopedNFTProviders.createScopedNFTProvider(provider: cap, filters: [idFilter], expiration: nil)
 
         let nft <- scopedProvider.withdraw(withdrawID: withdrawID)
-        assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
 
         // put it back!
         acct.getCapability<&{NonFungibleToken.CollectionPublic}>(ExampleNFT.CollectionPublicPath).borrow()!.deposit(token: <-nft)
+        
+        assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
         destroy scopedProvider
     }
 }

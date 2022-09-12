@@ -46,13 +46,14 @@ describe("ScopedNonFungibleTokenProvider tests", () => {
 
     it("should fail to withdraw an nft", async () => {
         const id = await mintExampleNFT(alice)
+        const id2 = await mintExampleNFT(alice)
         const [tx, err] = await sendTransaction({
             name: "scopedproviders/nft/withdraw_scoped_nft",
-            args: [[id], id + 1],
+            args: [[id], id2],
             signers: [alice]
         })
         expect(tx).toBe(null)
-        expect(err.includes("id is not enabled for withdraw")).toBe(true)
+        expect(err).toContain("panic: cannot withdraw nft. filter of type A.01cf0e2f2f715450.ScopedNFTProviders.NFTIDFilter failed")
     })
 
     it("should fail to withdraw an nft past expiration", async () => {
@@ -86,6 +87,6 @@ describe("ScopedNonFungibleTokenProvider tests", () => {
             signers: [alice]
         })
         expect(tx).toBe(null)
-        expect(err.includes("id is not enabled for withdraw")).toBe(true)
+        expect(err).toContain("panic: cannot withdraw nft. filter of type A.01cf0e2f2f715450.ScopedNFTProviders.NFTIDFilter failed")
     })
 })

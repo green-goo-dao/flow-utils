@@ -17,12 +17,12 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
 
         assert(scopedProvider.canWithdraw(withdrawID), message: "not able to withdraw")
         let nft <- scopedProvider.withdraw(withdrawID: withdrawID)
-        assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
-        
+
         // put it back!
         acct.getCapability<&{NonFungibleToken.CollectionPublic}>(ExampleNFT.CollectionPublicPath).borrow()!.deposit(token: <-nft)
+        assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
 
-        // this should fail!
+        // this should panic!
         let secondAttempt <- scopedProvider.withdraw(withdrawID: withdrawID)
         destroy secondAttempt
         destroy scopedProvider
