@@ -33,7 +33,8 @@ export const setup = async () => {
 
     await deployContractByName({name: "ArrayUtils", to: flowUtils, update: true})
     await deployContractByName({name: "StringUtils", to: flowUtils, update: true})
-    await deployContractByName({name: "ScopedProviders", to: flowUtils, update: true})
+    await deployContractByName({name: "ScopedNFTProviders", to: flowUtils, update: true})
+    await deployContractByName({name: "ScopedFTProviders", to: flowUtils, update: true})
 
     await mintFlow(alice, 1.0)
 

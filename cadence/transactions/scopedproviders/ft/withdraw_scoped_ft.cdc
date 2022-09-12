@@ -17,7 +17,8 @@ transaction(allowance: UFix64, withdrawAmount: UFix64) {
 
         assert(scopedProvider.canWithdraw(withdrawAmount), message: "not able to withdraw")
         let tokens <- scopedProvider.withdraw(amount: withdrawAmount)
-        assert(!scopedProvider.canWithdraw(withdrawAmount), message: "still able to withdraw")
+
+        assert(!scopedProvider.canWithdraw(withdrawAmount + 1.0), message: "still able to withdraw")
 
         // put it back!
         acct.getCapability<&{FungibleToken.Receiver}>(ExampleToken.ReceiverPath).borrow()!.deposit(from: <-tokens)

@@ -5,22 +5,18 @@ import StringUtils from "./StringUtils.cdc"
 //
 // TO AVOID RISK, PLEASE DEPLOY YOUR OWN VERSION OF THIS CONTRACT SO THAT
 // MALICIOUS UPDATES ARE NOT POSSIBLE
-// 
-// ScopedProviders are meant to solve the issue of unbounded access to NFT Collections
-// and FungibleToken vaults when a provider is called for. A provider to a sensitive resource
-// like a wallet's tokens or their NFTs should be scoped to specific amounts or ids to limit
-// the blast radius of things leaking or being exploited. 
 //
-// By using a scoped provider, only a subset of assets can be taken if the provider leaks
-// instead of the entire nft collection or vault depending on the capability being used
+// ScopedProviders are meant to solve the issue of unbounded access FungibleToken vaults 
+// when a provider is called for.
 pub contract ScopedFTProviders {
     pub struct interface FTFilter {
         pub fun canWithdrawAmount(_ amount: UFix64): Bool
         pub fun markAmountWithdrawn(_ amount: UFix64)
+        pub fun getDetails(): {String: AnyStruct}
     }
 
     pub struct AllowanceFilter: FTFilter {
-        access(self) var allowance: UFix64
+        access(self) let allowance: UFix64
         access(self) var allowanceUsed: UFix64
 
         init(_ allowance: UFix64) {
@@ -33,18 +29,24 @@ pub contract ScopedFTProviders {
         }
 
         pub fun markAmountWithdrawn(_ amount: UFix64) {
-            self.allowance = self.allowance + amount
+            self.allowanceUsed = self.allowanceUsed + amount
+        }
+
+        pub fun getDetails(): {String: AnyStruct} {
+            return {
+                "allowance": self.allowance,
+                "allowanceUsed": self.allowanceUsed
+            }
         }
     }
 
-    // ScopedFungibleTokenProvider
+    // ScopedFTProvider
     //
-    // A ScopedFungibleTokenProvider is only permitted to withdraw up to a
-    // certain amount of tokens. This allowance is deducted upon each withdraw
-    // and will fail if an attempt to withdraw is made that would surpass the limit.
-    pub resource ScopedFungibleTokenProvider: FungibleToken.Provider {
+    // A ScopedFTProvider is a wrapped FungibleTokenProvider with 
+    // filters that can be defined by anyone using the ScopedFTProvider.
+    pub resource ScopedFTProvider: FungibleToken.Provider {
         access(self) let provider: Capability<&{FungibleToken.Provider}>
-        access(self) let filters: [{FTFilter}]
+        access(self) var filters: [{FTFilter}]
 
         // block timestamp that this provider can no longer be used after
         access(self) let expiration: UFix64?
@@ -78,24 +80,34 @@ pub contract ScopedFTProviders {
                 self.expiration == nil || self.expiration! >= getCurrentBlock().timestamp: "provider has expired"
             }
 
-            for f in self.filters {
-                if !f.canWithdrawAmount(amount) {
-                    panic(StringUtils.join(["cannot tokens. filter of type", f.getType().identifier, "failed."], " "))
+            var i = 0
+            while i < self.filters.length {
+                if !self.filters[i].canWithdrawAmount(amount) {
+                    panic(StringUtils.join(["cannot withdraw tokens. filter of type", self.filters[i].getType().identifier, "failed."], " "))
                 }
 
-                f.markAmountWithdrawn(amount)
+                self.filters[i].markAmountWithdrawn(amount)
+                i = i + 1
             }
 
             return <-self.provider.borrow()!.withdraw(amount: amount)
         }
+
+        pub fun getDetails(): [{String: AnyStruct}] {
+            let details: [{String: AnyStruct}] = []
+            for f in self.filters {
+                details.append(f.getDetails())
+            }
+
+            return details
+        }
     }
-    
+
     pub fun createScopedFTProvider(
-        provider: Capability<&{FungibleToken.Provider}>, 
+        provider: Capability<&{FungibleToken.Provider}>,
         filters: [{FTFilter}],
         expiration: UFix64?
-    ): @ScopedFungibleTokenProvider {
-        return <- create ScopedFungibleTokenProvider(provider: provider, filters: filters, expiration: expiration)
+    ): @ScopedFTProvider {
+        return <- create ScopedFTProvider(provider: provider, filters: filters, expiration: expiration)
     }
 }
- 

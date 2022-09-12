@@ -125,6 +125,15 @@ pub struct interface NFTFilter {
 
             return <-nft
         }
+
+        pub fun getDetails(): [{String: AnyStruct}] {
+            let details: [{String: AnyStruct}] = []
+            for f in self.filters {
+                details.append(f.getDetails())
+            }
+
+            return details
+        }
     }
 
     pub fun createScopedNFTProvider(

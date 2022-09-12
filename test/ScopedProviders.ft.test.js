@@ -88,10 +88,11 @@ describe("ScopedFungibleToken tests", () => {
 
         const [tx, err] = await sendTransaction({
             name: "scopedproviders/ft/withdraw_scoped_ft_twice",
-            args: [allowance, allowance / 2],
+            args: [allowance],
             signers: [alice]
         })
 
+        expect(err).toBe(null)
         const depositAmount1 = Number(tx.events[1].data.amount)
         const depositAmount2 = Number(tx.events[3].data.amount)
 
