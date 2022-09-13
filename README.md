@@ -19,16 +19,16 @@ or an allowance for FungibleTokens.
 **It is encouraged that you copy this contract to your own location
 so that there isn't a risk of malicious updates**
 
-### ScopedNonFungibleTokenProvider
+### ScopedNFTProvider
 
-Wrapper around an NFT Provider that is restricted to specific ids.
-Once an nft has been withdrawn, its id cannot be withdrawn again!
+Wrapper around an NFT Provider. You can define your own filters to be applied to the provider or
+you can make use of some ready-made solutions as well
 
 ```cadence
 import NonFungibleToken from 0x1
 import ExampleNFT from 0x2
 
-import ScopedProviders from 0x3
+import ScopedNFTProviders from 0x3
 
 transaction(ids: [UInt64], withdrawID: UInt64) {
     prepare(acct: AuthAccount) {
@@ -36,9 +36,11 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
         acct.unlink(providerPath)
         acct.link<&{NonFungibleToken.Provider}>(providerPath, target: ExampleNFT.CollectionStoragePath)
 
-        let cap = acct.getCapability<&{NonFungibleToken.Provider}>(providerPath)
-        assert(cap.check(), message: "invalid private cap")
-        let scopedProvider = ScopedProviders.ScopedNFTProvider(provider: cap, ids: ids)
+        // We can specify any kind of filter we want.
+        // In this case, ScopedNFTProviders have a few ready-made ones 
+        // that folks can use 
+        let idFilter = ScopedNFTProviders.NFTIDFilter(ids)
+        let scopedProvider <- ScopedNFTProviders.createScopedNFTProvider(provider: cap, filters: [idFilter], expiration: nil)
 
         let nft <- scopedProvider.withdraw(withdrawID: withdrawID)
         assert(!scopedProvider.canWithdraw(withdrawID), message: "still able to withdraw")
@@ -50,15 +52,15 @@ transaction(ids: [UInt64], withdrawID: UInt64) {
 
 ### ScopedFungibleTokenProvider
 
-A ScopedFungibleTokenProvider is only permitted to withdraw up to a
-certain amount of tokens. This allowance is deducted upon each withdraw
-and will fail if an attempt to withdraw is made that would surpass the limit.
+Similar to a ScopedNFTProvider, a ScopedFTProvider wraps a FungibleToken.Provider capability
+and applies filters on it to control what way it can be accessed. One such use case could be
+for an allowance which restricts the total number of tokens that can be withdrawn through the provider
 
 ```cadence
 import FungibleToken from 0x1
 import ExampleToken from 0x2
 
-import ScopedProviders from 0x3
+import ScopedFTProviders from 0x3
 
 transaction(allowance: UFix64, withdrawAmount: UFix64) {
     prepare(acct: AuthAccount) {
@@ -68,7 +70,12 @@ transaction(allowance: UFix64, withdrawAmount: UFix64) {
 
         let cap = acct.getCapability<&AnyResource{FungibleToken.Provider}>(providerPath)
         assert(cap.check(), message: "invalid private cap")
-        let scopedProvider = ScopedProviders.ScopedFungibleTokenProvider(provider: cap, allowance: allowance)
+        
+        // We can specify any kind of filter we want.
+        // In this case, ScopedFTProviders have a few ready-made ones 
+        // that folks can use 
+        let filter = ScopedFTProviders.AllowanceFilter(allowance)
+        let scopedProvider <- ScopedFTProviders.createScopedFTProvider(provider: cap, filters: [filter], expiration: nil)
 
         assert(scopedProvider.canWithdraw(withdrawAmount), message: "not able to withdraw")
         let tokens <- scopedProvider.withdraw(amount: withdrawAmount)
