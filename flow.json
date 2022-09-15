@@ -1,96 +1,102 @@
 {
   "emulators": {
-    "default": {
-      "port": 3569,
-      "serviceAccount": "emulator-account"
-    }
+	"default": {
+	  "port": 3569,
+	  "serviceAccount": "emulator-account"
+	}
   },
   "contracts": {
-    "ArrayUtils": "./cadence/contracts/ArrayUtils.cdc",
-    "StringUtils": "./cadence/contracts/StringUtils.cdc",
-    "FungibleToken": {
-      "source": "./cadence/contracts/FungibleToken.cdc",
-      "aliases": {
-        "emulator": "0xee82856bf20e2aa6",
-        "testnet": "0x9a0766d93b6608b7",
-        "mainnet": "0xf233dcee88fe0abe"
-      }
-    },
-    "NonFungibleToken": {
-      "source": "./cadence/contracts/NonFungibleToken.cdc",
-      "aliases": {
-        "emulator": "0xf8d6e0586b0a20c7",
-        "testnet": "0x631e88ae7f1d7c20",
-        "mainnet": "0x1d7e57aa55817448"
-      }
-    },
-    "MetadataViews": {
-      "source": "./cadence/contracts/MetadataViews.cdc",
-      "aliases": {
-        "emulator": "0xf8d6e0586b0a20c7",
-        "testnet": "0x631e88ae7f1d7c20",
-        "mainnet": "0x1d7e57aa55817448"
-      }
-    },
-    "ExampleNFT": "./cadence/contracts/ExampleNFT.cdc",
-    "ExampleToken": "./cadence/contracts/ExampleToken.cdc"
+	"ArrayUtils": "./cadence/contracts/ArrayUtils.cdc",
+	"StringUtils": "./cadence/contracts/StringUtils.cdc",
+	"ScopedNFTProviders": "./cadence/contracts/ScopedNFTProviders.cdc",
+	"ScopedFTProviders": "./cadence/contracts/ScopedFTProviders.cdc",
+	"FungibleToken": {
+	  "source": "./cadence/contracts/FungibleToken.cdc",
+	  "aliases": {
+		"emulator": "0xee82856bf20e2aa6",
+		"testnet": "0x9a0766d93b6608b7",
+		"mainnet": "0xf233dcee88fe0abe"
+	  }
+	},
+	"NonFungibleToken": {
+	  "source": "./cadence/contracts/NonFungibleToken.cdc",
+	  "aliases": {
+		"emulator": "0xf8d6e0586b0a20c7",
+		"testnet": "0x631e88ae7f1d7c20",
+		"mainnet": "0x1d7e57aa55817448"
+	  }
+	},
+	"MetadataViews": {
+	  "source": "./cadence/contracts/MetadataViews.cdc",
+	  "aliases": {
+		"emulator": "0xf8d6e0586b0a20c7",
+		"testnet": "0x631e88ae7f1d7c20",
+		"mainnet": "0x1d7e57aa55817448"
+	  }
+	},
+	"ExampleNFT": "./cadence/contracts/ExampleNFT.cdc",
+	"ExampleToken": "./cadence/contracts/ExampleToken.cdc"
   },
   "networks": {
-    "emulator": "127.0.0.1:3569",
-    "mainnet": "access.mainnet.nodes.onflow.org:9000",
-    "testnet": "access.devnet.nodes.onflow.org:9000"
+	"emulator": "127.0.0.1:3569",
+	"mainnet": "access.mainnet.nodes.onflow.org:9000",
+	"testnet": "access.devnet.nodes.onflow.org:9000"
   },
   "accounts": {
-    "emulator-account": {
-      "address": "f8d6e0586b0a20c7",
-      "key": "f2e846bd4c1fbf17839ae59e111c6b1c98579eda7a841412f102d6621ec671cb"
-    },
-    "flow-utils-testnet": {
-      "address": "0x31ad40c07a2a9788",
-      "key": {
-        "type": "google-kms",
-        "index": 0,
-        "signatureAlgorithm": "ECDSA_P256",
-        "hashAlgorithm": "SHA2_256",
-        "resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/testnet/cryptoKeyVersions/1"
-      }
-    },
-    "flow-utils-mainnet": {
-      "address": "0xa340dc0a4ec828ab",
-      "key": {
-        "type": "google-kms",
-        "index": 0,
-        "signatureAlgorithm": "ECDSA_P256",
-        "hashAlgorithm": "SHA2_256",
-        "resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
-      }
-    }
+	"emulator-account": {
+	  "address": "f8d6e0586b0a20c7",
+	  "key": "f2e846bd4c1fbf17839ae59e111c6b1c98579eda7a841412f102d6621ec671cb"
+	},
+	"flow-utils-testnet": {
+	  "address": "0x31ad40c07a2a9788",
+	  "key": {
+		"type": "google-kms",
+		"index": 0,
+		"signatureAlgorithm": "ECDSA_P256",
+		"hashAlgorithm": "SHA2_256",
+		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/testnet/cryptoKeyVersions/1"
+	  }
+	},
+	"flow-utils-mainnet": {
+	  "address": "0xa340dc0a4ec828ab",
+	  "key": {
+		"type": "google-kms",
+		"index": 0,
+		"signatureAlgorithm": "ECDSA_P256",
+		"hashAlgorithm": "SHA2_256",
+		"resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
+	  }
+	}
   },
   "deployments": {
-    "emulator": {
-      "emulator-account": [
-        "ArrayUtils",
-        "StringUtils",
-        "NonFungibleToken",
-        "MetadataViews",
-        "ExampleNFT",
-        "ExampleToken"
-      ]
-    },
-    "testnet": {
-      "flow-utils-testnet": [
-        "ArrayUtils",
-        "StringUtils"
-      ]
-    },
-    "mainnet": {
-      "flow-utils-mainnet": [
-        "ArrayUtils",
-        "StringUtils"
-      ]
-    }
+	"emulator": {
+	  "emulator-account": [
+		"ArrayUtils",
+		"StringUtils",
+		"NonFungibleToken",
+		"MetadataViews",
+		"ExampleNFT",
+		"ExampleToken",
+		"ScopedNFTProviders",
+		"ScopedFTProviders"
+	  ]
+	},
+	"testnet": {
+	  "flow-utils-testnet": [
+		"ArrayUtils",
+		"StringUtils"
+	  ]
+	},
+	"mainnet": {
+	  "flow-utils-mainnet": [
+		"ArrayUtils",
+		"StringUtils",
+		"ScopedNFTProviders",
+		"ScopedFTProviders"
+	  ]
+	}
   },
   "emulatorAccounts": {
-    "emulator-account": "f8d6e0586b0a20c7"
+	"emulator-account": "f8d6e0586b0a20c7"
   }
 }
