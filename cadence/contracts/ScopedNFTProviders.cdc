@@ -149,3 +149,4 @@ pub struct interface NFTFilter {
         return <- create ScopedNFTProvider(provider: provider, filters: filters, expiration: expiration)
     }
 }
+ 

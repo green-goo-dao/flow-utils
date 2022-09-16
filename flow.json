@@ -84,7 +84,9 @@
 	"testnet": {
 	  "flow-utils-testnet": [
 		"ArrayUtils",
-		"StringUtils"
+		"StringUtils",
+		"ScopedNFTProviders",
+		"ScopedFTProviders"
 	  ]
 	},
 	"mainnet": {
