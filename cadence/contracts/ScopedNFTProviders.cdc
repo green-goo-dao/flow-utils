@@ -12,7 +12,7 @@ import StringUtils from "./StringUtils.cdc"
 // By using a scoped provider, only a subset of assets can be taken if the provider leaks
 // instead of the entire nft collection.
 pub contract ScopedNFTProviders {
-pub struct interface NFTFilter {
+    pub struct interface NFTFilter {
         pub fun canWithdraw(_ nft: &NonFungibleToken.NFT): Bool
         pub fun markWithdrawn(_ nft: &NonFungibleToken.NFT)
         pub fun getDetails(): {String: AnyStruct}
