@@ -2,6 +2,14 @@ import ArrayUtils from "./ArrayUtils.cdc"
 
 pub contract StringUtils {
    
+    pub fun format(_ s: String, _ args: {String:String}): String{
+      var formatted = s
+      for key in args.keys{
+        formatted = StringUtils.replaceAll(formatted, "{".concat(key).concat("}"), args[key]!)
+      }
+      return formatted
+    }
+
     pub fun explode(_ s: String): [String]{
         var chars : [String] =  []
         for i in ArrayUtils.range(0, s.length){
