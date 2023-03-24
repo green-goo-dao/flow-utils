@@ -6,7 +6,7 @@ import StringUtils from "./StringUtils.cdc"
 // TO AVOID RISK, PLEASE DEPLOY YOUR OWN VERSION OF THIS CONTRACT SO THAT
 // MALICIOUS UPDATES ARE NOT POSSIBLE
 //
-// ScopedProviders are meant to solve the issue of unbounded access FungibleToken vaults 
+// ScopedProviders are meant to solve the issue of unbounded access FungibleToken vaults
 // when a provider is called for.
 pub contract ScopedFTProviders {
     pub struct interface FTFilter {
@@ -42,7 +42,7 @@ pub contract ScopedFTProviders {
 
     // ScopedFTProvider
     //
-    // A ScopedFTProvider is a wrapped FungibleTokenProvider with 
+    // A ScopedFTProvider is a wrapped FungibleTokenProvider with
     // filters that can be defined by anyone using the ScopedFTProvider.
     pub resource ScopedFTProvider: FungibleToken.Provider {
         access(self) let provider: Capability<&{FungibleToken.Provider}>
@@ -61,13 +61,20 @@ pub contract ScopedFTProviders {
             return self.provider.check()
         }
 
+        pub fun isExpired(): Bool {
+            if let expiration = self.expiration {
+                return getCurrentBlock().timestamp >= expiration
+            }
+            return false
+        }
+
         pub fun canWithdraw(_ amount: UFix64): Bool {
-            if self.expiration != nil && getCurrentBlock().timestamp >= self.expiration! {
+            if self.isExpired() {
                 return false
             }
 
-            for f in self.filters {
-                if !f.canWithdrawAmount(amount) {
+            for filter in self.filters {
+                if !filter.canWithdrawAmount(amount) {
                     return false
                 }
             }
@@ -77,7 +84,7 @@ pub contract ScopedFTProviders {
 
         pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
             pre {
-                self.expiration == nil || self.expiration! >= getCurrentBlock().timestamp: "provider has expired"
+                !self.isExpired(): "provider has expired"
             }
 
             var i = 0
@@ -95,8 +102,8 @@ pub contract ScopedFTProviders {
 
         pub fun getDetails(): [{String: AnyStruct}] {
             let details: [{String: AnyStruct}] = []
-            for f in self.filters {
-                details.append(f.getDetails())
+            for filter in self.filters {
+                details.append(filter.getDetails())
             }
 
             return details
@@ -111,3 +118,4 @@ pub contract ScopedFTProviders {
         return <- create ScopedFTProvider(provider: provider, filters: filters, expiration: expiration)
     }
 }
+
