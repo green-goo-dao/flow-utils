@@ -2,7 +2,7 @@ import StringUtils from "./StringUtils.cdc"
 
 pub contract AddressUtils {
 
-    priv fun sansPrefix(_ input: String): String{
+    priv fun withoutPrefix(_ input: String): String{
         var address=input
 
         //get rid of 0x
