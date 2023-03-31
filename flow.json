@@ -8,6 +8,7 @@
   "contracts": {
 	"ArrayUtils": "./cadence/contracts/ArrayUtils.cdc",
 	"StringUtils": "./cadence/contracts/StringUtils.cdc",
+	"AddressUtils": "./cadence/contracts/AddressUtils.cdc",
 	"ScopedNFTProviders": "./cadence/contracts/ScopedNFTProviders.cdc",
 	"ScopedFTProviders": "./cadence/contracts/ScopedFTProviders.cdc",
 	"FungibleToken": {
@@ -73,6 +74,7 @@
 	  "emulator-account": [
 		"ArrayUtils",
 		"StringUtils",
+		"AddressUtils",
 		"NonFungibleToken",
 		"MetadataViews",
 		"ExampleNFT",
@@ -85,6 +87,7 @@
 	  "flow-utils-testnet": [
 		"ArrayUtils",
 		"StringUtils",
+		"AddressUtils",
 		"ScopedNFTProviders",
 		"ScopedFTProviders"
 	  ]
@@ -93,6 +96,7 @@
 	  "flow-utils-mainnet": [
 		"ArrayUtils",
 		"StringUtils",
+		"AddressUtils",
 		"ScopedNFTProviders",
 		"ScopedFTProviders"
 	  ]
