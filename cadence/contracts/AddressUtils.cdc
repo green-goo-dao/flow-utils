@@ -33,7 +33,7 @@ pub contract AddressUtils {
             stringValue =  StringUtils.split((input as! Type).identifier, ".")[1]
         }
 
-        var address=self.sansPrefix(stringValue)
+        var address=self.withoutPrefix(stringValue)
         var r:UInt64 = 0
         var bytes = address.decodeHex()
         while bytes.length>0{
