@@ -22,8 +22,6 @@ pub contract AddressUtils {
 
         if let string = input as? String {
             stringValue = string
-        } else if let number = input as? Number {
-            stringValue = number.toString()
         } else if let address = input as? Address {
             stringValue = address.toString()
         } else if let type = input as? Type {
