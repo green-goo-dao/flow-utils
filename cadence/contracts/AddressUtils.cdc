@@ -30,6 +30,9 @@ pub contract AddressUtils {
                 return nil
             }
             stringValue = parts[1]
+        } else {
+            return nil
+        }
         }
 
         var address = withoutPrefix(stringValue)
