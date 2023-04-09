@@ -1,4 +1,4 @@
-import StringUtils from "./StringUtils.cdc"
+import StringUtils from "StringUtils"
 
 pub contract AddressUtils {
 
