@@ -17,30 +17,33 @@ pub contract AddressUtils {
         return address
     }
     
-    priv fun parseUInt64(_ input: AnyStruct): UInt64?{
-        var stringValue:String = ""
+    priv fun parseUInt64(_ input: AnyStruct): UInt64? {
+        var stringValue = ""
 
-        if input.getType().isSubtype(of: Type<String>()){
-            stringValue = input as! String
+        if let string = input as? String {
+            stringValue = string
+        } else if let address = input as? Address {
+            stringValue = address.toString()
+        } else if let type = input as? Type {
+            let parts = StringUtils.split(type.identifier, ".")
+            if parts.length == 1 {
+                return nil
+            }
+            stringValue = parts[1]
+        } else {
+            return nil
         }
-        else if input.getType().isSubtype(of: Type<Int>()){
-            stringValue = (input as! Int).toString()
-        }
-        else if input.getType().isSubtype(of: Type<Address>()){
-            stringValue = (input as! Address).toString()
-        }
-        else if input.getType().isSubtype(of: Type<Type>()){
-            stringValue =  StringUtils.split((input as! Type).identifier, ".")[1]
         }
 
-        var address=self.withoutPrefix(stringValue)
-        var r:UInt64 = 0
+        var address = withoutPrefix(stringValue)
+        var r: UInt64 = 0
         var bytes = address.decodeHex()
-        while bytes.length>0{
-            r = r  + (UInt64(bytes.removeFirst()) << UInt64(bytes.length * 8 ))
+        var length = bytes.length
+        for byte in bytes {
+            length = length - 1
+            r = r + UInt64(byte) << UInt64(length * 8)
         }
         return r
-
     }
 
     pub fun parseAddress(_ input: AnyStruct): Address?{
