@@ -5,7 +5,7 @@ import StringUtils from "./StringUtils.cdc"
 //
 // TO AVOID RISK, PLEASE DEPLOY YOUR OWN VERSION OF THIS CONTRACT SO THAT
 // MALICIOUS UPDATES ARE NOT POSSIBLE
-// 
+//
 // ScopedNFTProviders are meant to solve the issue of unbounded access to NFT Collections.
 // A provider can be given extensible filters which allow limited access to resources based on any trait on the NFT itself.
 //
@@ -84,6 +84,13 @@ pub contract ScopedNFTProviders {
         // block timestamp that this provider can no longer be used after
         access(self) let expiration: UFix64?
 
+         pub fun isExpired(): Bool {
+            if let expiration = self.expiration {
+                return getCurrentBlock().timestamp >= expiration
+            }
+            return false
+        }
+
         pub init(provider: Capability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>, filters: [{NFTFilter}], expiration: UFix64?) {
             self.provider = provider
             self.expiration = expiration
@@ -91,6 +98,10 @@ pub contract ScopedNFTProviders {
         }
 
         pub fun canWithdraw(_ id: UInt64): Bool {
+            if self.isExpired() {
+                return false
+            }
+
             let nft = self.provider.borrow()!.borrowNFT(id: id)
             if nft == nil {
                 return false
@@ -112,7 +123,7 @@ pub contract ScopedNFTProviders {
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
             pre {
-                self.expiration == nil || getCurrentBlock().timestamp <= self.expiration!: "provider has expired"
+                !self.isExpired(): "provider has expired"
             }
 
             let nft <- self.provider.borrow()!.withdraw(withdrawID: withdrawID)
@@ -142,11 +153,11 @@ pub contract ScopedNFTProviders {
     }
 
     pub fun createScopedNFTProvider(
-        provider: Capability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>, 
-        filters: [{NFTFilter}], 
+        provider: Capability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>,
+        filters: [{NFTFilter}],
         expiration: UFix64?
     ): @ScopedNFTProvider {
         return <- create ScopedNFTProvider(provider: provider, filters: filters, expiration: expiration)
     }
 }
- 
+
