@@ -2,6 +2,7 @@
 
 pub contract ArrayUtils {
 
+    
     pub fun rangeFunc(_ start: Int, _ end: Int, _ f : ((Int):Void) ) {
         var current = start
         while current < end{
@@ -56,4 +57,52 @@ pub contract ArrayUtils {
         return res
     }
 
+   
+    //heap sort 
+    //TODO: @bluesign: we need to add some generic comparators
+    pub fun comparatorUInt64(a:AnyStruct, b:AnyStruct, _ reverse:Bool):Bool{
+      if reverse {
+        return (a as! UInt64)<(b as! UInt64)
+      }else{
+        return (a as! UInt64)>(b as! UInt64)
+      }
+    }
+
+    priv fun heapify(_ arr: &[AnyStruct], _ n:Int, _ i:Int, _ comparator: ((AnyStruct, AnyStruct, Bool): Bool), _ reverse:Bool) {
+      var largest = i;
+      var left = 2 * i + 1;
+      var right = 2 * i + 2;
+
+      if (left < n && comparator(arr[left], arr[largest], reverse)){
+        largest = left
+      }
+
+      if (right < n && comparator(arr[right], arr[largest], reverse)){
+        largest = right
+      }
+
+      if (largest != i) {
+        arr[i]<->arr[largest]
+        ArrayUtils.heapify(arr, n, largest, comparator, reverse);
+      }
+    }
+
+    pub fun heapSort(_ arr: &[AnyStruct], _ comparator: ((AnyStruct, AnyStruct, Bool): Bool), _ reverse:Bool ) {
+      var n = arr.length
+
+      var i = (n / 2) - 1
+      while i>=0{
+          ArrayUtils.heapify(arr, n, i,comparator, reverse);
+          i=i-1
+      }
+      
+      i = n - 1
+      while i>=0{
+          arr[0]<->arr[i]
+          ArrayUtils.heapify(arr, i, 0, comparator, reverse);
+          i=i-1
+      }
+    }
+
 }
+ 
