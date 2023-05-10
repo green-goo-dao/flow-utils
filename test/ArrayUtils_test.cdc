@@ -19,19 +19,23 @@ pub fun testRange() {
 
     // Assert
     var expected: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for i in expected {
-        Test.assert(range.contains(i))
+    var i: Int = 0
+    while i < expected.length {
+        Test.assert(expected[i] == range[i])
+        i = i + 1
     }
 }
 
 pub fun testReverseRange() {
     // Act
-    var range = arrayUtils.reverseRange(10, 0)
+    var range = arrayUtils.reverse(arrayUtils.range(0, 10))
 
     // Assert
-    var expected: [Int] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    for i in expected {
-        Test.assert(range.contains(i))
+    var expected: [Int] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    var i: Int = 0
+    while i < expected.length {
+        Test.assert(expected[i] == range[i])
+        i = i + 1
     }
 }
 

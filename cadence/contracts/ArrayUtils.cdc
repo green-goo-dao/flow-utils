@@ -10,14 +10,6 @@ pub contract ArrayUtils {
         }
     }
 
-    pub fun reverseRangeFunc(_ start: Int, _ end: Int, _ f: ((Int): Void)) {
-        var current = start
-        while current > end {
-            f(current)
-            current = current - 1
-        }
-    }
-
     pub fun range(_ start: Int, _ end: Int): [Int] {
         var res: [Int] = []
         self.rangeFunc(start, end, fun (i: Int) {
@@ -26,11 +18,13 @@ pub contract ArrayUtils {
         return res
     }
 
-    pub fun reverseRange(_ start: Int, _ end: Int): [Int] {
+    pub fun reverse(_ array: [Int]): [Int] {
         var res: [Int] = []
-        self.reverseRangeFunc(start, end, fun (i: Int) {
-            res.append(i)
-        })
+        var i: Int = array.length - 1
+        while i >= 0 {
+            res.append(array[i])
+            i = i - 1
+        }
         return res
     }
 
