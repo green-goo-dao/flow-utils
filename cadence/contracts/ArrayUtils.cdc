@@ -2,19 +2,29 @@
 
 pub contract ArrayUtils {
 
-    pub fun rangeFunc(_ start: Int, _ end: Int, _ f : ((Int):Void) ) {
+    pub fun rangeFunc(_ start: Int, _ end: Int, _ f: ((Int): Void)) {
         var current = start
-        while current < end{
+        while current < end {
             f(current)
             current = current + 1
         }
     }
 
-    pub fun range(_ start: Int, _ end: Int): [Int]{
-        var res:[Int] = []
-        self.rangeFunc(start, end, fun (i:Int){
+    pub fun range(_ start: Int, _ end: Int): [Int] {
+        var res: [Int] = []
+        self.rangeFunc(start, end, fun (i: Int) {
             res.append(i)
         })
+        return res
+    }
+
+    pub fun reverse(_ array: [Int]): [Int] {
+        var res: [Int] = []
+        var i: Int = array.length - 1
+        while i >= 0 {
+            res.append(array[i])
+            i = i - 1
+        }
         return res
     }
 
