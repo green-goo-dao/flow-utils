@@ -18,6 +18,8 @@ pub fun setup() {
         arguments: []
     )
 
+    Test.expect(err, Test.beNil())
+
     let stringUtils = Test.readFile("../cadence/contracts/StringUtils.cdc")
     err = blockchain.deployContract(
         name: "StringUtils",
@@ -26,7 +28,7 @@ pub fun setup() {
         arguments: []
     )
 
-    Test.assert(err == nil)
+    Test.expect(err, Test.beNil())
 
     let addressUtils = Test.readFile("../cadence/contracts/AddressUtils.cdc")
     err = blockchain.deployContract(
@@ -36,44 +38,44 @@ pub fun setup() {
         arguments: []
     )
 
-    Test.assert(err == nil)
+    Test.expect(err, Test.beNil())
 }
 
 pub fun testWithoutPrefix() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_without_prefix.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_without_prefix.cdc")
+    Test.assertEqual(true, value)
 }
 
 pub fun testParseUInt64() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_parse_uint64.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_parse_uint64.cdc")
+    Test.assertEqual(true, value)
 }
 
 pub fun testParseAddress() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_parse_address.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_parse_address.cdc")
+    Test.assertEqual(true, value)
 }
 
 pub fun testIsValidAddress() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_is_valid_address.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_is_valid_address.cdc")
+    Test.assertEqual(true, value)
 }
 
 pub fun testGetNetworkFromAddress() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_get_network_from_address.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_get_network_from_address.cdc")
+    Test.assertEqual(true, value)
 }
 
 pub fun testGetCurrentNetwork() {
-    let returnedValue = executeScript("../cadence/scripts/address_utils_get_current_network.cdc")
-    Test.assert(returnedValue, message: "found: false")
+    let value = executeScript("../cadence/scripts/address_utils_get_current_network.cdc")
+    Test.assertEqual(true, value)
 }
 
 priv fun executeScript(_ scriptPath: String): Bool {
-    var script = Test.readFile(scriptPath)
+    let script = Test.readFile(scriptPath)
     let value = blockchain.executeScript(script, [])
 
-    Test.assert(value.status == Test.ResultStatus.succeeded)
+    Test.expect(value, Test.beSucceeded())
 
     return value.returnValue! as! Bool
 }
