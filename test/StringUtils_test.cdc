@@ -1,105 +1,178 @@
 import Test
+import "StringUtils"
 
-pub let blockchain = Test.newEmulatorBlockchain()
-pub let account = blockchain.createAccount()
-
-pub fun setup() {
-    blockchain.useConfiguration(Test.Configuration({
-        "ArrayUtils": account.address,
-        "../contracts/StringUtils.cdc": account.address
-    }))
-
-    let arrayUtils = Test.readFile("../cadence/contracts/ArrayUtils.cdc")
-    var err = blockchain.deployContract(
+access(all)
+fun setup() {
+    var err = Test.deployContract(
         name: "ArrayUtils",
-        code: arrayUtils,
-        account: account,
+        path: "../cadence/contracts/ArrayUtils.cdc",
         arguments: []
     )
-
     Test.expect(err, Test.beNil())
 
-    let stringUtils = Test.readFile("../cadence/contracts/StringUtils.cdc")
-    err = blockchain.deployContract(
+    err = Test.deployContract(
         name: "StringUtils",
-        code: stringUtils,
-        account: account,
+        path: "../cadence/contracts/StringUtils.cdc",
         arguments: []
     )
-
     Test.expect(err, Test.beNil())
 }
 
-pub fun testFormat() {
-    let value = executeScript("../cadence/scripts/string_utils_format.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testFormat() {
+    // Act
+    let str = StringUtils.format("Hello, {name}!", {"name": "Peter"})
+
+    // Assert
+    Test.assertEqual("Hello, Peter!", str)
 }
 
-pub fun testExplode() {
-    let value = executeScript("../cadence/scripts/string_utils_explode.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testExplode() {
+    // Act
+    let chars = StringUtils.explode("Hello!")
+
+    // Assert
+    let expected = ["H", "e", "l", "l", "o", "!"]
+    Test.assertEqual(expected, chars)
 }
 
-pub fun testTrimLeft() {
-    let value = executeScript("../cadence/scripts/string_utils_trim_left.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testTrimLeft() {
+    // Act
+    var str = StringUtils.trimLeft("    Hello, World!")
+
+    // Assert
+    Test.assertEqual("Hello, World!", str)
+
+    // Act
+    str = StringUtils.trimLeft("")
+
+    // Assert
+    Test.assertEqual("", str)
 }
 
-pub fun testTrim() {
-    let value = executeScript("../cadence/scripts/string_utils_trim.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testTrim() {
+    // Act
+    let str = StringUtils.trim("  Hello, World!")
+
+    // Assert
+    Test.assertEqual("Hello, World!", str)
 }
 
-pub fun testReplaceAll() {
-    let value = executeScript("../cadence/scripts/string_utils_replace_all.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testReplaceAll() {
+    // Act
+    let str = StringUtils.replaceAll("Hello, World!", "l", "L")
+
+    // Assert
+    Test.assertEqual("HeLLo, WorLd!", str)
 }
 
-pub fun testHasPrefix() {
-    let value = executeScript("../cadence/scripts/string_utils_has_prefix.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testHasPrefix() {
+    // Act
+    var hasPrefix = StringUtils.hasPrefix("Hello, World!", "Hell")
+
+    // Assert
+    Test.assert(hasPrefix)
+
+    // Act
+    hasPrefix = StringUtils.hasPrefix("Hell", "Hello, World!")
+
+    // Assert
+    Test.assertEqual(false, hasPrefix)
 }
 
-pub fun testHasSuffix() {
-    let value = executeScript("../cadence/scripts/string_utils_has_suffix.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testHasSuffix() {
+    // Act
+    var hasSuffix = StringUtils.hasSuffix("Hello, World!", "ld!")
+
+    // Assert
+    Test.assert(hasSuffix)
+
+    // Act
+    hasSuffix = StringUtils.hasSuffix("ld!", "Hello, World!")
+
+    // Assert
+    Test.assertEqual(false, hasSuffix)
 }
 
-pub fun testIndex() {
-    let value = executeScript("../cadence/scripts/string_utils_index.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testIndex() {
+    // Act
+    var index = StringUtils.index("Hello, Peter!", "Peter", 0)
+
+    // Assert
+    Test.assertEqual(7 as Int?, index)
+
+    // Act
+    index = StringUtils.index("Hello, Peter!", "Mark", 0)
+
+    // Assert
+    Test.assertEqual(nil, index)
 }
 
-pub fun testCount() {
-    let value = executeScript("../cadence/scripts/string_utils_count.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testCount() {
+    // Act
+    let count = StringUtils.count("Hello, World!", "o")
+
+    // Assert
+    Test.assertEqual(2, count)
 }
 
-pub fun testContains() {
-    let value = executeScript("../cadence/scripts/string_utils_contains.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testContains() {
+    // Act
+    var found = StringUtils.contains("Hello, World!", "orl")
+
+    // Assert
+    Test.assert(found)
+
+    // Act
+    found = StringUtils.contains("Hello, World!", "wow")
+
+    // Assert
+    Test.assertEqual(false, found)
 }
 
-pub fun testSubstringUntil() {
-    let value = executeScript("../cadence/scripts/string_utils_substring_until.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testSubstringUntil() {
+    // Act
+    var substring = StringUtils.substringUntil(
+        "Hello, sir. How are you today?",
+        ".",
+        0
+    )
+
+    // Assert
+    Test.assertEqual("Hello, sir", substring)
+
+    // Act
+    substring = StringUtils.substringUntil("Hello, sir!", ".", 0)
+
+    // Assert
+    Test.assertEqual("Hello, sir!", substring)
 }
 
-pub fun testSplit() {
-    let value = executeScript("../cadence/scripts/string_utils_split.cdc")
-    Test.assertEqual(true, value)
+access(all)
+fun testSplit() {
+    // Act
+    let phrases = StringUtils.split("Hello,How,Are,You? Today", ",")
+
+    // Assert
+    let expected = ["Hello", "How", "Are", "You? Today"]
+    Test.assertEqual(expected, phrases)
 }
 
-pub fun testJoin() {
-    let value = executeScript("../cadence/scripts/string_utils_join.cdc")
-    Test.assertEqual(true, value)
-}
+access(all)
+fun testJoin() {
+    // Act
+    let str = StringUtils.join(["Hello", "How", "Are", "You", "Today?"], " ")
 
-priv fun executeScript(_ scriptPath: String): Bool {
-    let script = Test.readFile(scriptPath)
-    let value = blockchain.executeScript(script, [])
-
-    Test.expect(value, Test.beSucceeded())
-
-    return value.returnValue! as! Bool
+    // Assert
+    Test.assertEqual("Hello How Are You Today?", str)
 }

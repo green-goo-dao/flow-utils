@@ -1,4 +1,4 @@
-import StringUtils from "StringUtils"
+import "StringUtils"
 
 pub contract AddressUtils {
 
@@ -94,7 +94,7 @@ pub contract AddressUtils {
     }
 
     pub fun getNetworkFromAddress(_ input: AnyStruct): String? {
-        for network in ["MAINNET", "TESTNET", "EMULATOR"]{
+        for network in ["MAINNET", "TESTNET", "EMULATOR"] {
             if self.isValidAddress(input, forNetwork: network){
                 return network
             }
@@ -103,7 +103,11 @@ pub contract AddressUtils {
     }
 
     pub fun currentNetwork(): String {
-        return self.getNetworkFromAddress(self.account.address)!
+        if let network = self.getNetworkFromAddress(self.account.address) {
+            return network!
+        }
+
+        panic("unknown network!")
     }
 
 }
