@@ -1,5 +1,5 @@
-import NonFungibleToken from "./NonFungibleToken.cdc"
-import StringUtils from "./StringUtils.cdc"
+import "NonFungibleToken"
+import "StringUtils"
 
 // ScopedNFTProviders
 //
