@@ -1,5 +1,5 @@
-import FungibleToken from "./FungibleToken.cdc"
-import StringUtils from "./StringUtils.cdc"
+import "FungibleToken"
+import "StringUtils"
 
 // ScopedFTProviders
 //

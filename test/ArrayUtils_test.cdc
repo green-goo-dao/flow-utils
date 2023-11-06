@@ -1,41 +1,53 @@
 import Test
-import ArrayUtils from "ArrayUtils"
+import "ArrayUtils"
 
-pub struct Token {
-    pub let id: Int
-    pub var balance: Int
+access(all) struct Token {
+    access(all) let id: Int
+    access(all) var balance: Int
 
     init(id: Int, balance: Int) {
         self.id = id
         self.balance = balance
     }
 
-    pub fun setBalance(_ balance: Int) {
+    access(all)
+    fun setBalance(_ balance: Int) {
         self.balance = balance
     }
 }
 
-pub let arrayUtils = ArrayUtils()
+access(all)
+fun setup() {
+    let err = Test.deployContract(
+        name: "ArrayUtils",
+        path: "../cadence/contracts/ArrayUtils.cdc",
+        arguments: []
+    )
+    Test.expect(err, Test.beNil())
+}
 
-pub fun testRange() {
+access(all)
+fun testRange() {
     // Act
-    let range = arrayUtils.range(0, 10)
+    let range = ArrayUtils.range(0, 10)
 
     // Assert
     let expected: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     Test.assertEqual(expected, range)
 }
 
-pub fun testReverseRange() {
+access(all)
+fun testReverseRange() {
     // Act
-    let range = arrayUtils.reverse(arrayUtils.range(0, 10))
+    let range = ArrayUtils.reverse(ArrayUtils.range(0, 10))
 
     // Assert
     let expected: [Int] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
     Test.assertEqual(expected, range)
 }
 
-pub fun testTransform() {
+access(all)
+fun testTransform() {
     // Arrange
     let tokens = [
         Token(id: 0, balance: 10),
@@ -44,7 +56,7 @@ pub fun testTransform() {
     ]
 
     // Act
-    arrayUtils.transform(&tokens as &[AnyStruct], fun (t: AnyStruct): AnyStruct {
+    ArrayUtils.transform(&tokens as &[AnyStruct], fun (t: AnyStruct): AnyStruct {
         var token = t as! Token
         token.setBalance(token.balance * 2)
         return token
@@ -59,7 +71,8 @@ pub fun testTransform() {
     Test.assertEqual(expected, tokens)
 }
 
-pub fun testIterate() {
+access(all)
+fun testIterate() {
     // Arrange
     let tokens = [
         Token(id: 0, balance: 10),
@@ -71,7 +84,7 @@ pub fun testIterate() {
 
     // Act
     var totalBalance = 0
-    arrayUtils.iterate(tokens, fun (t: AnyStruct): Bool {
+    ArrayUtils.iterate(tokens, fun (t: AnyStruct): Bool {
         var token = t as! Token
         if token.id <= 2 {
             totalBalance = totalBalance + token.balance
@@ -83,7 +96,8 @@ pub fun testIterate() {
     Test.assertEqual(30, totalBalance)
 }
 
-pub fun testMap() {
+access(all)
+fun testMap() {
     // Arrange
     let tokens = [
         Token(id: 0, balance: 10),
@@ -92,7 +106,7 @@ pub fun testMap() {
     ]
 
     // Act
-    let mapped = arrayUtils.map(tokens, fun (t: AnyStruct): AnyStruct {
+    let mapped = ArrayUtils.map(tokens, fun (t: AnyStruct): AnyStruct {
         var token = t as! Token
         token.setBalance(token.balance - 2)
         return token
@@ -107,12 +121,13 @@ pub fun testMap() {
     Test.assertEqual(expected, mapped)
 }
 
-pub fun testMapStrings() {
+access(all)
+fun testMapStrings() {
     // Arrange
     let strings = ["Peter", "John", "Mark"]
 
     // Act
-    let mapped = arrayUtils.mapStrings(strings, fun (s: String): String {
+    let mapped = ArrayUtils.mapStrings(strings, fun (s: String): String {
         return "Hello, ".concat(s).concat("!")
     })
 
@@ -125,7 +140,8 @@ pub fun testMapStrings() {
     Test.assertEqual(expected, mapped)
 }
 
-pub fun testReduce() {
+access(all)
+fun testReduce() {
     // Arrange
     let tokens = [
         Token(id: 0, balance: 10),
@@ -135,7 +151,7 @@ pub fun testReduce() {
     let initial = Token(id: 5, balance: 0)
 
     // Act
-    let token = arrayUtils.reduce(tokens, initial, fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
+    let token = ArrayUtils.reduce(tokens, initial, fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
         var token = t as! Token
         var accToken = acc as! Token
         accToken.setBalance(accToken.balance + token.balance)
