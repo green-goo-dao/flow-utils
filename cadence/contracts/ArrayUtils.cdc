@@ -66,4 +66,29 @@ pub contract ArrayUtils {
         return res
     }
 
+    pub fun insertionSort(_ array: [AnyStruct], _ f: ((AnyStruct, AnyStruct): Int)): [AnyStruct] {
+    
+        var arr: [AnyStruct] = []
+        var i = 0
+        while i < array.length {
+            arr.append(array[i])
+            i = i + 1
+        }
+    
+        let n = arr.length
+        i = 1
+        while i < n {
+            let key = arr[i]
+            var j = i - 1
+    
+            while j >= 0 && f(arr[j], key) < 0 {
+                arr[j + 1] = arr[j]
+                j = j - 1
+            }
+            arr[j + 1] = key
+            i = i + 1
+        }
+    
+        return arr
+    }
 }
