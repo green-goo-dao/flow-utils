@@ -36,7 +36,7 @@ pub contract AccountUtils {
             allNodeInfo.append(FlowIDTableStaking.NodeInfo(nodeID: nodeStaker.id))
         }
 
-        //get all delegators in new way
+        // get all delegator objects using the original basic delegator account configuration
         if let delegator = account.getCapability<&{FlowIDTableStaking.NodeDelegatorPublic}>(/public/flowStakingDelegator).borrow() {
             allDelegateInfo.append(FlowIDTableStaking.DelegatorInfo(nodeID: delegator.nodeID, delegatorID: delegator.id))
         }
