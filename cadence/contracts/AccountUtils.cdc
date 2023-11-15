@@ -112,7 +112,7 @@ pub contract AccountUtils {
             return  nil
         }
 
-        //we get the balance of this account
+        // Get the main Vault balance of this account
         if let vaultRef = account.getCapability(/public/flowTokenBalance).borrow<&FlowToken.Vault{FungibleToken.Balance}>(){
             info.primaryAcctBalance = vaultRef.balance
         }
