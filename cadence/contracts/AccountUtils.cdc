@@ -121,7 +121,6 @@ pub contract AccountUtils {
         //we get the locked account for this if any
         if let lockedAccount = account.getCapability(LockedTokens.LockedAccountInfoPublicPath).borrow<&LockedTokens.TokenHolder{LockedTokens.LockedAccountInfo}>() {
             info.secondaryAddress = lockedAccount.getLockedAccountAddress() 
-            // \`+ FlowStorageFees.minimumStorageReservation\` is due to https://github.com/onflow/flow-core-contracts/blob/6fcd492d16186e5615d2e6589bc5b7ebce41f548/contracts/LockedTokens.cdc#L308
             info.secondaryAcctBalance = lockedAccount.getLockedAccountBalance() + FlowStorageFees.minimumStorageReservation
         }
         // Get stakes and delegations of the account and secondary/locked account
