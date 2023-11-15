@@ -50,7 +50,8 @@ pub contract AccountUtils {
 
         //if we have a lockedAccount linked we need to add stakings/delegators there
         if let lockedAccountInfo = account.getCapability<&LockedTokens.TokenHolder{LockedTokens.LockedAccountInfo}>(LockedTokens.LockedAccountInfoPublicPath).borrow() {
-            if let nodeID = lockedAccountInfo.getNodeID() {
+            if !doesAccountHaveStakingCollection {
+                if let nodeID = lockedAccountInfo.getNodeID() {
                 allNodeInfo.append(FlowIDTableStaking.NodeInfo(nodeID: nodeID))
             }
 
