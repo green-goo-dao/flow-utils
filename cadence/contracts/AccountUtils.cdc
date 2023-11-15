@@ -41,7 +41,8 @@ pub contract AccountUtils {
             allDelegateInfo.append(FlowIDTableStaking.DelegatorInfo(nodeID: delegator.nodeID, delegatorID: delegator.id))
         }
 
-        //get all stakers/delegators from the staking collection
+        // get all nodes/delegators from the staking collection
+        // includes all nodes and delegators that are in the locked account
         var doesAccountHaveStakingCollection = FlowStakingCollection.doesAccountHaveStakingCollection(address: account.address)
         if doesAccountHaveStakingCollection {
             allNodeInfo.appendAll(FlowStakingCollection.getAllNodeInfo(address: account.address))
