@@ -136,6 +136,16 @@
         "hashAlgorithm": "SHA2_256",
         "resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
       }
+    },
+    "bjartek": {
+      "address": "0xa340dc0a4ec828ab",
+      "key": {
+        "type": "google-kms",
+        "index": 1,
+        "signatureAlgorithm": "ECDSA_P256",
+        "hashAlgorithm": "SHA2_256",
+        "resourceID": "projects/bjartek/locations/europe-north1/keyRings/flow/cryptoKeys/flow/cryptoKeyVersions/1"
+      }
     }
   },
   "deployments": {
