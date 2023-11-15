@@ -118,7 +118,7 @@ pub contract AccountUtils {
         }
 
 
-        //we get the locked account for this if any
+        // Get the locked account associated with the primary account if there is one
         if let lockedAccount = account.getCapability(LockedTokens.LockedAccountInfoPublicPath).borrow<&LockedTokens.TokenHolder{LockedTokens.LockedAccountInfo}>() {
             info.secondaryAddress = lockedAccount.getLockedAccountAddress() 
             info.secondaryAcctBalance = lockedAccount.getLockedAccountBalance() + FlowStorageFees.minimumStorageReservation
