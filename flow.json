@@ -71,6 +71,39 @@
       "aliases": {
         "testing": "0x0000000000000007"
       }
+    },
+    "FlowToken": {
+      "aliases": {
+        "testnet": "0x7e60df042a9c0868",
+        "emulator": "0x0ae53cb6e3f42a79",
+        "mainnet": "0x1654653399040a61"
+      }
+    },
+    "FlowIDTableStaking": {
+      "aliases": {
+        "testnet": "0x9eca2b38b18b5dfe",
+        "emulator": "0xf8d6e0586b0a20c7",
+        "mainnet": "0x8624b52f9ddcd04a"
+      }
+    },
+    "LockedTokens": {
+      "aliases": {
+        "mainnet": "0x8d0e87b65159ae63",
+        "testnet": "0x95e019a17d0e23d7"
+      }
+    },
+    "FlowStakingCollection": {
+      "aliases": {
+        "mainnet": "0x8d0e87b65159ae63",
+        "testnet": "0x95e019a17d0e23d7"
+      }
+    },
+    "FlowStorageFees": {
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x8c5303eaa26202d6",
+        "mainnet": "0xe467b9dd11fa00df"
+      }
     }
   },
   "networks": {
