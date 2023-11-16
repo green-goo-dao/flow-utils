@@ -89,7 +89,6 @@
       "aliases": {
         "testnet": "0x9eca2b38b18b5dfe",
         "emulator": "0xf8d6e0586b0a20c7",
-        "testing": "0x0000000000000001",
         "mainnet": "0x8624b52f9ddcd04a"
       }
     },
