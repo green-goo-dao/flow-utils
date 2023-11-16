@@ -24,6 +24,12 @@
         "testing": "0x0000000000000007"
       }
     },
+    "AccountUtils": {
+      "source": "./cadence/contracts/AccountUtils.cdc",
+      "aliases": {
+        "testing": "0x0000000000000007"
+      }
+    },
     "ScopedNFTProviders": {
       "source": "./cadence/contracts/ScopedNFTProviders.cdc",
       "aliases": {
@@ -83,6 +89,7 @@
       "aliases": {
         "testnet": "0x9eca2b38b18b5dfe",
         "emulator": "0xf8d6e0586b0a20c7",
+        "testing": "0x0000000000000001",
         "mainnet": "0x8624b52f9ddcd04a"
       }
     },
@@ -95,7 +102,18 @@
     "FlowStakingCollection": {
       "aliases": {
         "mainnet": "0x8d0e87b65159ae63",
-        "testnet": "0x95e019a17d0e23d7"
+        "testnet": "0x95e019a17d0e23d7",
+        "emulator": "0xf8d6e0586b0a20c7"
+      }
+    },
+    "FlowStakingProxy": {
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7"
+      }
+    },
+    "LockedTokens": {
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7"
       }
     },
     "FlowStorageFees": {
@@ -159,7 +177,8 @@
         "ExampleNFT",
         "ExampleToken",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "AccountUtils"
       ]
     },
     "testnet": {
@@ -168,7 +187,8 @@
         "StringUtils",
         "AddressUtils",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "AccountUtils"
       ]
     },
     "mainnet": {
@@ -177,7 +197,8 @@
         "StringUtils",
         "AddressUtils",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "AccountUtils"
       ]
     }
   }
