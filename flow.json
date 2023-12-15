@@ -97,13 +97,7 @@
       "aliases": {
         "mainnet": "0x8d0e87b65159ae63",
         "testnet": "0x95e019a17d0e23d7",
-        "testing": "0x0000000000000007"
-      }
-    },
-    "StakingProxy": {
-      "source": "./cadence/contracts/StakingProxy.cdc",
-      "aliases": {
-        "testing": "0x0000000000000007"
+        "emulator": "0xf8d6e0586b0a20c7"
       }
     },
     "FlowStakingCollection": {
@@ -111,11 +105,6 @@
         "mainnet": "0x8d0e87b65159ae63",
         "testnet": "0x95e019a17d0e23d7",
         "emulator": "0xf8d6e0586b0a20c7"
-      }
-    },
-    "FlowStakingProxy": {
-      "aliases": {
-        "testing": "0x0000000000000007"
       }
     },
     "FlowStorageFees": {
@@ -174,15 +163,11 @@
         "ArrayUtils",
         "StringUtils",
         "AddressUtils",
-        "NonFungibleToken",
-        "MetadataViews",
         "ExampleNFT",
         "ExampleToken",
         "ScopedNFTProviders",
         "ScopedFTProviders",
-        "AccountUtils",
-        "LockedTokens",
-        "StakingProxy"
+        "AccountUtils"
       ]
     },
     "testnet": {
