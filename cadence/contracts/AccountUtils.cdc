@@ -15,7 +15,7 @@ pub contract AccountUtils {
         pub(set) var primaryAcctBalance: UFix64
         pub(set) var secondaryAddress: Address?
         pub(set) var secondaryAcctBalance: UFix64
-        pub(set) var stakedBalance: UFix64
+        pub(set) var nodeStakedBalance: UFix64
         pub(set) var delegatedBalance: UFix64
 
         init(_ address:Address) {
@@ -23,7 +23,7 @@ pub contract AccountUtils {
             self.primaryAcctBalance = 0.0
             self.secondaryAddress = nil
             self.secondaryAcctBalance = 0.0
-            self.stakedBalance = 0.0
+            self.nodeStakedBalance = 0.0
             self.delegatedBalance = 0.0
         }
 
@@ -134,7 +134,7 @@ pub contract AccountUtils {
 
         for key in nodes.keys {
             let value = nodes[key]!
-            info.stakedBalance = info.stakedBalance + value
+            info.nodeStakedBalance = info.nodeStakedBalance + value
         }
 
         for key in delegators.keys {
