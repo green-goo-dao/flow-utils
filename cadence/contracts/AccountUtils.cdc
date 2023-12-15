@@ -1,4 +1,3 @@
-
 import "FungibleToken"
 import "FlowToken"
 import "FlowIDTableStaking"
@@ -28,7 +27,7 @@ pub contract AccountUtils {
         }
 
         pub fun getTotalBalance() :UFix64 {
-            return self.primaryAcctBalance+self.secondaryAcctBalance+self.stakedBalance+self.delegatedBalance
+            return self.primaryAcctBalance+self.secondaryAcctBalance+self.nodeStakedBalance+self.delegatedBalance
         }
     }
 

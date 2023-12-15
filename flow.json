@@ -93,9 +93,17 @@
       }
     },
     "LockedTokens": {
+      "source": "./cadence/contracts/LockedTokens.cdc",
       "aliases": {
         "mainnet": "0x8d0e87b65159ae63",
-        "testnet": "0x95e019a17d0e23d7"
+        "testnet": "0x95e019a17d0e23d7",
+        "testing": "0x0000000000000007"
+      }
+    },
+    "StakingProxy": {
+      "source": "./cadence/contracts/StakingProxy.cdc",
+      "aliases": {
+        "testing": "0x0000000000000007"
       }
     },
     "FlowStakingCollection": {
@@ -107,7 +115,7 @@
     },
     "FlowStakingProxy": {
       "aliases": {
-        "emulator": "0xf8d6e0586b0a20c7"
+        "testing": "0x0000000000000007"
       }
     },
     "FlowStorageFees": {
@@ -172,7 +180,9 @@
         "ExampleToken",
         "ScopedNFTProviders",
         "ScopedFTProviders",
-        "AccountUtils"
+        "AccountUtils",
+        "LockedTokens",
+        "StakingProxy"
       ]
     },
     "testnet": {

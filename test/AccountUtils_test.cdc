@@ -14,7 +14,7 @@ fun setup() {
 access(all)
 fun testWithoutPrefix() {
     // Act
-    var balance = AccountUtils.getTotalFlowBalance("0xf8d6e0586b0a20c7")
+    var balance = AccountUtils.getTotalFlowBalance(address:"0xf8d6e0586b0a20c7")
 
 
     Test.assertEqual(balance, 0.1)
