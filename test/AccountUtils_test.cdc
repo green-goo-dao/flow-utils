@@ -13,10 +13,13 @@ fun setup() {
 
 access(all)
 fun testGetFlowBalance() {
-    // Act
-    var balance = AccountUtils.getTotalFlowBalance(address:Address(0xf8d6e0586b0a20c7))
 
-    Test.assertEqual(nil, balance)
+
+
+    let address=Test.serviceAccount().address
+    var balance = AccountUtils.getTotalFlowBalance(address:address)
+
+    Test.assertEqual(1000000000.0, balance)
 
 }
 
