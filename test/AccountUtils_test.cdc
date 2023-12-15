@@ -14,12 +14,10 @@ fun setup() {
 access(all)
 fun testGetFlowBalance() {
 
-
-
     let address=Test.serviceAccount().address
-    var balance = AccountUtils.getTotalFlowBalance(address:address)
-
-    Test.assertEqual(1000000000.0, balance)
+    let balance = AccountUtils.getTotalFlowBalance(address:address)
+    let expected : UFix64? = 1000000000.0
+    Test.assertEqual(expected, balance)
 
 }
 

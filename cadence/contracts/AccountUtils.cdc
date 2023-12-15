@@ -5,7 +5,6 @@ import "LockedTokens"
 import "FlowStakingCollection"
 import "FlowStorageFees"
 
-
 pub contract AccountUtils {
 
     pub struct AccountInfo {
@@ -51,7 +50,6 @@ pub contract AccountUtils {
             return  nil
         }
 
-        //TODO: should we return something here
         if account.getLinkTarget(/public/lockedFlowTokenReceiver) != nil {
             return  nil
         }
@@ -61,13 +59,8 @@ pub contract AccountUtils {
             info.primaryAcctBalance = vaultRef.balance
         }
 
-        // Get the locked account associated with the primary account if there is one
-        if let lockedAccount = account.getCapability(LockedTokens.LockedAccountInfoPublicPath).borrow<&LockedTokens.TokenHolder{LockedTokens.LockedAccountInfo}>() {
-        }
-
         var allNodeInfo: [FlowIDTableStaking.NodeInfo] = []
         var allDelegateInfo: [FlowIDTableStaking.DelegatorInfo] = []
-
 
         // get all node objects using the original basic node account configuration
         if let nodeStaker = account.getCapability<&{FlowIDTableStaking.NodeStakerPublic}>(FlowIDTableStaking.NodeStakerPublicPath).borrow() {
