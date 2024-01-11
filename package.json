@@ -29,6 +29,7 @@
     "jest-environment-node": "^28.1.0"
   },
   "dependencies": {
+    "@flowtyio/flow-contracts": "^0.0.18",
     "fcl-gcp-kms-authorizer": "^0.0.1-b"
   }
 }
