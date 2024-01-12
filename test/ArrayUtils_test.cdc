@@ -49,15 +49,14 @@ fun testReverseRange() {
 access(all)
 fun testTransform() {
     // Arrange
-    let tokens =[
+    let tokens: [Token] = [
         Token(id: 0, balance: 10),
         Token(id: 1, balance: 5),
         Token(id: 2, balance: 15)
     ]
 
     // Act
-    let ref = &tokens as auth(Mutate) &[AnyStruct]
-    ArrayUtils.transform(ref, fun (t: &AnyStruct) {
+    ArrayUtils.transform(&tokens, fun (t: &AnyStruct) {
         let token = t as! &Token
         token.setBalance(token.balance * 2)
     })
