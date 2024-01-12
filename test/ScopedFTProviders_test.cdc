@@ -9,28 +9,28 @@ access(all)
 fun setup() {
     var err = Test.deployContract(
         name: "ArrayUtils",
-        path: "../cadence/contracts/ArrayUtils.cdc",
+        path: "../contracts/ArrayUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "StringUtils",
-        path: "../cadence/contracts/StringUtils.cdc",
+        path: "../contracts/StringUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "ExampleToken",
-        path: "../cadence/contracts/ExampleToken.cdc",
+        path: "../node_modules/@flowtyio/flow-contracts/contracts/example/ExampleToken.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "ScopedFTProviders",
-        path: "../cadence/contracts/ScopedFTProviders.cdc",
+        path: "../contracts/ScopedFTProviders.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
@@ -39,7 +39,7 @@ fun setup() {
 access(all)
 fun beforeEach() {
     let txResult = executeTransaction(
-        "../cadence/transactions/exampletoken/destroy.cdc",
+        "../transactions/exampletoken/destroy.cdc",
         [],
         alice
     )
@@ -55,16 +55,16 @@ fun testWithdrawTokensSuccessfully() {
     mintExampleToken(recipient: alice, amount: tokenAmount)
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/ft/withdraw_scoped_ft.cdc",
+        "../transactions/scopedproviders/ft/withdraw_scoped_ft.cdc",
         [allowance, allowance],
         alice
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleToken.TokensWithdrawn>())
-    let event = events[0] as! ExampleToken.TokensWithdrawn
-    Test.assertEqual(alice.address, event.from!)
-    Test.assertEqual(allowance, event.amount)
+    let e = events[0] as! ExampleToken.TokensWithdrawn
+    Test.assertEqual(alice.address, e.from!)
+    Test.assertEqual(allowance, e.amount)
 }
 
 access(all)
@@ -76,16 +76,16 @@ fun testWithdrawTokensSuccessfullyWithExpiration() {
     mintExampleToken(recipient: alice, amount: tokenAmount)
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/ft/withdraw_scoped_ft_before_expiration.cdc",
+        "../transactions/scopedproviders/ft/withdraw_scoped_ft_before_expiration.cdc",
         [allowance, allowance],
         alice
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleToken.TokensWithdrawn>())
-    let event = events[0] as! ExampleToken.TokensWithdrawn
-    Test.assertEqual(alice.address, event.from!)
-    Test.assertEqual(allowance, event.amount)
+    let e = events[0] as! ExampleToken.TokensWithdrawn
+    Test.assertEqual(alice.address, e.from!)
+    Test.assertEqual(allowance, e.amount)
 }
 
 access(all)
@@ -97,7 +97,7 @@ fun testCannotWithdrawMoreThanAllowance() {
     mintExampleToken(recipient: alice, amount: tokenAmount)
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/ft/withdraw_scoped_ft.cdc",
+        "../transactions/scopedproviders/ft/withdraw_scoped_ft.cdc",
         [allowance, allowance * 2.0],
         alice
     )
@@ -114,7 +114,7 @@ fun testCannotWithdrawPastExpiration() {
     mintExampleToken(recipient: alice, amount: tokenAmount)
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/ft/withdraw_scoped_ft_past_expiration.cdc",
+        "../transactions/scopedproviders/ft/withdraw_scoped_ft_past_expiration.cdc",
         [allowance, 1.0],
         alice
     )
@@ -131,7 +131,7 @@ fun testWithdrawTwiceUnderBalance() {
     mintExampleToken(recipient: alice, amount: tokenAmount)
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/ft/withdraw_scoped_ft_twice.cdc",
+        "../transactions/scopedproviders/ft/withdraw_scoped_ft_twice.cdc",
         [allowance],
         alice
     )
@@ -144,9 +144,9 @@ fun testWithdrawTwiceUnderBalance() {
 }
 
 access(self)
-fun setupExampleToken(account: Test.Account) {
+fun setupExampleToken(account: Test.TestAccount) {
     let txResult = executeTransaction(
-        "../cadence/transactions/exampletoken/setup.cdc",
+        "../transactions/exampletoken/setup.cdc",
         [],
         account
     )
@@ -154,9 +154,9 @@ fun setupExampleToken(account: Test.Account) {
 }
 
 access(self)
-fun mintExampleToken(recipient: Test.Account, amount: UFix64) {
+fun mintExampleToken(recipient: Test.TestAccount, amount: UFix64) {
     let txResult = executeTransaction(
-        "../cadence/transactions/exampletoken/mint.cdc",
+        "../transactions/exampletoken/mint.cdc",
         [recipient.address, amount],
         admin
     )
