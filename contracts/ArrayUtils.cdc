@@ -27,9 +27,9 @@ access(all) contract ArrayUtils {
         return res
     }
 
-    access(all) fun transform(_ array: auth(Mutate) &[AnyStruct], _ f : fun (AnyStruct): AnyStruct){
+    access(all) fun transform(_ array: auth(Mutate) &[AnyStruct], _ f : fun (&AnyStruct)){
         for i in self.range(0, array.length){
-            array[i] = f(array[i])
+            f(array[i])
         }
     }
 

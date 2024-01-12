@@ -57,10 +57,9 @@ fun testTransform() {
 
     // Act
     let ref = &tokens as auth(Mutate) &[AnyStruct]
-    ArrayUtils.transform(ref, fun (t: AnyStruct): AnyStruct {
-        var token = t as! &Token
+    ArrayUtils.transform(ref, fun (t: &AnyStruct) {
+        let token = t as! &Token
         token.setBalance(token.balance * 2)
-        return token
     })
 
     // Assert
