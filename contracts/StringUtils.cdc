@@ -1,13 +1,13 @@
 import "ArrayUtils"
 
 access(all) contract StringUtils {
-   
+
     access(all) fun format(_ s: String, _ args: {String:String}): String{
-      var formatted = s
-      for key in args.keys{
-        formatted = StringUtils.replaceAll(formatted, "{".concat(key).concat("}"), args[key]!)
-      }
-      return formatted
+        var formatted = s
+        for key in args.keys{
+            formatted = StringUtils.replaceAll(formatted, "{".concat(key).concat("}"), args[key]!)
+        }
+        return formatted
     }
 
     access(all) fun explode(_ s: String): [String]{
@@ -75,14 +75,7 @@ access(all) contract StringUtils {
     }
 
     access(all) fun split(_ s: String, _ delimiter: String): [String] {
-        let segments: [String] = [] 
-        var p = 0
-        while p<=s.length{
-            var preDelimiter = self.substringUntil(s, delimiter, p)
-            segments.append(preDelimiter)
-            p = p + preDelimiter.length + delimiter.length 
-        }
-        return segments 
+        return s.split(separator: delimiter)
     }
 
     access(all) fun join(_ strs: [String], _ separator: String): String {
