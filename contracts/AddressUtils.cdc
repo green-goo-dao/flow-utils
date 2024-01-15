@@ -100,10 +100,6 @@ access(all) contract AddressUtils {
     }
 
     access(all) fun currentNetwork(): String {
-        if let network = self.getNetworkFromAddress(self.account.address) {
-            return network
-        }
-
-        panic("unknown network!")
+        return  self.getNetworkFromAddress(self.account.address) ?? panic("unknown network!")
     }
 }
