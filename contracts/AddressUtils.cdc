@@ -58,6 +58,7 @@ access(all) contract AddressUtils {
         let codeWords: {String: UInt64} = {
             "MAINNET" : 0,
             "TESTNET" : 0x6834ba37b3980209,
+            "CRESCENDO" : 0x6834ba37b3980209,
             "EMULATOR": 0x1cb159857af02018
         }
 
