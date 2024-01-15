@@ -32,7 +32,7 @@ access(all) contract StringUtils {
     }
 
     access(all) fun replaceAll(_ s: String, _ search: String, _ replace: String): String{
-        return self.join(self.split(s, search), replace)
+        return s.replaceAll(of: search, with: replace)
     }
 
     access(all) fun hasPrefix(_ s: String, _ prefix: String) : Bool{
@@ -79,10 +79,6 @@ access(all) contract StringUtils {
     }
 
     access(all) fun join(_ strs: [String], _ separator: String): String {
-        var joinedStr = ""
-        for s in strs {
-            joinedStr = joinedStr.concat(s).concat(separator)
-        }
-        return joinedStr.slice(from: 0, upTo: joinedStr.length - separator.length)
+        return String.join(strs, separator: separator)
     }
 }
