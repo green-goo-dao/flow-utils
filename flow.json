@@ -36,6 +36,18 @@
         "testing": "0x0000000000000007"
       }
     },
+    "Burner": {
+      "source": "./cadence/contracts/Burner.cdc",
+      "aliases": {
+        "testing": "0x0000000000000007"
+      }
+    },
+    "SafeDestroyTest": {
+      "source": "./cadence/contracts/SafeDestroyTest.cdc",
+      "aliases": {
+        "testing": "0x0000000000000007"
+      }
+    },
     "FungibleToken": {
       "source": "./cadence/contracts/FungibleToken.cdc",
       "aliases": {
@@ -116,7 +128,9 @@
         "ExampleNFT",
         "ExampleToken",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "Burner",
+        "SafeDestroyTest"
       ]
     },
     "testnet": {
@@ -125,7 +139,8 @@
         "StringUtils",
         "AddressUtils",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "Burner"
       ]
     },
     "mainnet": {
@@ -134,7 +149,8 @@
         "StringUtils",
         "AddressUtils",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "Burner"
       ]
     }
   }
