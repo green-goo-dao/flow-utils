@@ -4,7 +4,7 @@ pub contract SafeDestroyTest {
     pub resource Safe: Burner.SafeDestroy {
         pub let allowDestroy: Bool
 
-        pub fun callback() {
+        pub fun safeDestroyCallback() {
             assert(self.allowDestroy, message: "allowDestroy must be set to true")
         }
 
