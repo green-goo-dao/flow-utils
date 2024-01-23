@@ -5,7 +5,7 @@ pub let BurnerAccount = Test.getAccount(0x0000000000000007)
 
 pub fun setup() {
     Test.deployContract(name: "Burner", path: "../cadence/contracts/Burner.cdc", arguments: [])
-    Test.deployContract(name: "SafeDestroyTest", path: "../cadence/contracts/SafeDestroyTest.cdc", arguments: [])
+    Test.deployContract(name: "BurnableTest", path: "../cadence/contracts/BurnableTest.cdc", arguments: [])
 }
 
 pub fun testSafeDestory_Allowed() {
@@ -35,6 +35,28 @@ pub fun testUnsafeDestroy_Allowed() {
         "burner/create_and_destroy_unsafe.cdc",
         [acct],
         []
+    )
+}
+
+pub fun testDestroy_Dict() {
+    let acct = Test.createAccount()
+
+    let types = [Type<Address>(), Type<String>(), Type<CapabilityPath>(), Type<Number>(), Type<Type>(), Type<Character>()]
+    for type in types {
+        txExecutor(
+            "burner/create_and_destroy_dict.cdc",
+            [acct],
+            [true, type]
+        ) 
+    }
+}
+
+pub fun testDestroy_Array() {
+    let acct = Test.createAccount()
+    txExecutor(
+        "burner/create_and_destroy_array.cdc",
+        [acct],
+        [true]
     )
 }
 

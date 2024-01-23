@@ -1,28 +1,83 @@
 // Burner is a contract that can facilitate the destruction of any resource on flow.
 pub contract Burner {
 
-    // When Crescendo (Cadence 1.0) is released, custom destructors will be removed from the language.
-    // SafeDestroy is an interface meant to replace custom destructors, allowing anyone to add a callback
-    // method to ensure they do not destroy something which is not meant to be.
+    // When Crescendo (Cadence 1.0) is released, custom destructors will be removed from cadece.
+    // Burnable is an interface meant to replace this lost feature, allowing anyone to add a callback
+    // method to ensure they do not destroy something which is not meant to be, or to add logic based on destruction
+    // such as tracking the supply of an NFT Collection
     //
-    // NOTE: The only way to see benefit from this interface is to call the safeDestroyCallback method yourself,
-    // or to always use the safeDestroy method in this contract. Anyone who owns a resource can always elect **not**
+    // NOTE: The only way to see benefit from this interface is to call the burnCallback method yourself,
+    // or to always use the burn method in this contract. Anyone who owns a resource can always elect **not**
     // to destroy a resource this way
-    pub resource interface SafeDestroy {
-        pub fun safeDestroyCallback()
+    pub resource interface Burnable {
+        pub fun burnCallback()
     }
 
-    // safeDestroy is a global burn method which will destroy any resource it is given.
-    // If the provided resource implements the SafeDestroy interface, it will call the safeDestroyCallback
+    // burn is a global method which will destroy any resource it is given.
+    // If the provided resource implements the Burnable interface, it will call the burnCallback
     // method and then destroy afterwards.
-    pub fun safeDestroy(_ r: @AnyResource) {
-        if r.isInstance(Type<@{SafeDestroy}>()) {
-            let s <- (r as! @{SafeDestroy})
-            s.safeDestroyCallback()
+    pub fun burn(_ r: @AnyResource) {
+        if r.isInstance(Type<@{Burnable}>()) {
+            let s <- (r as! @{Burnable})
+            s.burnCallback()
             destroy s
-            return 
+        } else if r.isInstance(Type<@[AnyResource]>()) {
+            let arr <- (r as! @[AnyResource])
+            while arr.length > 0 {
+                let item <- arr.removeFirst()
+                self.burn(<-item)
+            }
+            destroy arr
+        } else if r.isInstance(Type<@{String: AnyResource}>()) {
+            let d <- (r as! @{String: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        } else if r.isInstance(Type<@{Number: AnyResource}>()) {
+            let d <- (r as! @{Number: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        } else if r.isInstance(Type<@{Type: AnyResource}>()) {
+            let d <- (r as! @{Type: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        }  else if r.isInstance(Type<@{Address: AnyResource}>()) {
+            let d <- (r as! @{Address: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        }  else if r.isInstance(Type<@{Path: AnyResource}>()) {
+            let d <- (r as! @{Path: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        }  else if r.isInstance(Type<@{Character: AnyResource}>()) {
+            let d <- (r as! @{Character: AnyResource})
+            let keys = d.keys
+            while keys.length > 0 {
+                let item <- d.remove(key: keys.removeFirst())
+                self.burn(<-item)
+            }
+            destroy d
+        } else {
+            destroy r
         }
-
-        destroy r
     }
 }

@@ -42,8 +42,8 @@
         "testing": "0x0000000000000007"
       }
     },
-    "SafeDestroyTest": {
-      "source": "./cadence/contracts/SafeDestroyTest.cdc",
+    "BurnableTest": {
+      "source": "./cadence/contracts/BurnableTest.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
@@ -130,7 +130,7 @@
         "ScopedNFTProviders",
         "ScopedFTProviders",
         "Burner",
-        "SafeDestroyTest"
+        "BurnableTest"
       ]
     },
     "testnet": {

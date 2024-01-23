@@ -1,10 +1,10 @@
 import "Burner"
 
-pub contract SafeDestroyTest {
-    pub resource Safe: Burner.SafeDestroy {
+pub contract BurnableTest {
+    pub resource Safe: Burner.Burnable {
         pub let allowDestroy: Bool
 
-        pub fun safeDestroyCallback() {
+        pub fun burnCallback() {
             assert(self.allowDestroy, message: "allowDestroy must be set to true")
         }
 
