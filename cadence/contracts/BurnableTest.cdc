@@ -1,11 +1,14 @@
 import "Burner"
 
 pub contract BurnableTest {
+    pub var totalBurned: UInt64
+
     pub resource Safe: Burner.Burnable {
         pub let allowDestroy: Bool
 
         pub fun burnCallback() {
             assert(self.allowDestroy, message: "allowDestroy must be set to true")
+            BurnableTest.totalBurned = BurnableTest.totalBurned + 1
         }
 
         init(_ allowDestroy: Bool) {
@@ -21,5 +24,9 @@ pub contract BurnableTest {
 
     pub fun createUnsafe(): @Unsafe {
         return <- create Unsafe()
+    }
+
+    init() {
+        self.totalBurned = 0
     }
 }

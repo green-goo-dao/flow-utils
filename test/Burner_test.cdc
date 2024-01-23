@@ -51,6 +51,21 @@ pub fun testDestroy_Dict() {
     }
 }
 
+pub fun testDestroy_Dict_NotAllowed() {
+    let acct = Test.createAccount()
+
+    let types = [Type<Address>(), Type<String>(), Type<CapabilityPath>(), Type<Number>(), Type<Type>(), Type<Character>()]
+    for type in types {
+        Test.expectFailure(fun() {
+            txExecutor(
+                "burner/create_and_destroy_dict.cdc",
+                [acct],
+                [false, type]
+            )
+        }, errorMessageSubstring: "allowDestroy must be set to true")
+    }
+}
+
 pub fun testDestroy_Array() {
     let acct = Test.createAccount()
     txExecutor(

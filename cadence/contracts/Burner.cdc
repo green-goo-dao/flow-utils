@@ -17,65 +17,57 @@ pub contract Burner {
     // If the provided resource implements the Burnable interface, it will call the burnCallback
     // method and then destroy afterwards.
     pub fun burn(_ r: @AnyResource) {
-        if r.isInstance(Type<@{Burnable}>()) {
-            let s <- (r as! @{Burnable})
+        if let s <- r as? @{Burnable} {
             s.burnCallback()
             destroy s
-        } else if r.isInstance(Type<@[AnyResource]>()) {
-            let arr <- (r as! @[AnyResource])
+        } else if let arr <- r as? @[AnyResource] {
             while arr.length > 0 {
                 let item <- arr.removeFirst()
                 self.burn(<-item)
             }
             destroy arr
-        } else if r.isInstance(Type<@{String: AnyResource}>()) {
-            let d <- (r as! @{String: AnyResource})
-            let keys = d.keys
+        } else if let stringDict <- r as? @{String: AnyResource} {
+            let keys = stringDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- stringDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
-        } else if r.isInstance(Type<@{Number: AnyResource}>()) {
-            let d <- (r as! @{Number: AnyResource})
-            let keys = d.keys
+            destroy stringDict
+        } else if let numDict <- r as? @{Number: AnyResource} {
+            let keys = numDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- numDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
-        } else if r.isInstance(Type<@{Type: AnyResource}>()) {
-            let d <- (r as! @{Type: AnyResource})
-            let keys = d.keys
+            destroy numDict
+        } else if let typeDict <- r as? @{Type: AnyResource} {
+            let keys = typeDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- typeDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
-        }  else if r.isInstance(Type<@{Address: AnyResource}>()) {
-            let d <- (r as! @{Address: AnyResource})
-            let keys = d.keys
+            destroy typeDict
+        } else if let addressDict <- r as? @{Address: AnyResource} {
+            let keys = addressDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- addressDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
-        }  else if r.isInstance(Type<@{Path: AnyResource}>()) {
-            let d <- (r as! @{Path: AnyResource})
-            let keys = d.keys
+            destroy addressDict
+        } else if let pathDict <- r as? @{Path: AnyResource} {
+            let keys = pathDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- pathDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
-        }  else if r.isInstance(Type<@{Character: AnyResource}>()) {
-            let d <- (r as! @{Character: AnyResource})
-            let keys = d.keys
+            destroy pathDict
+        } else if let charDict <- r as? @{Character: AnyResource} {
+            let keys = charDict.keys
             while keys.length > 0 {
-                let item <- d.remove(key: keys.removeFirst())
+                let item <- charDict.remove(key: keys.removeFirst())!
                 self.burn(<-item)
             }
-            destroy d
+            destroy charDict
         } else {
             destroy r
         }
