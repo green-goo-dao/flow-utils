@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/Flowtyio/flow-utils#readme",
   "dependencies": {
-    "@flowtyio/flow-contracts": "0.1.0-beta.5"
+    "@flowtyio/flow-contracts": "0.1.0-beta.6"
   }
 }
