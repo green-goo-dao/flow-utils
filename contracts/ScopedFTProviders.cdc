@@ -10,8 +10,8 @@ import "StringUtils"
 // when a provider is called for.
 access(all) contract ScopedFTProviders {
     access(all) struct interface FTFilter {
-        access(all) fun canWithdrawAmount(_ amount: UFix64): Bool
-        access(FungibleToken.Withdrawable) fun markAmountWithdrawn(_ amount: UFix64)
+        access(all) view fun canWithdrawAmount(_ amount: UFix64): Bool
+        access(FungibleToken.Withdraw) fun markAmountWithdrawn(_ amount: UFix64)
         access(all) fun getDetails(): {String: AnyStruct}
     }
 
@@ -24,11 +24,11 @@ access(all) contract ScopedFTProviders {
             self.allowanceUsed = 0.0
         }
 
-        access(all) fun canWithdrawAmount(_ amount: UFix64): Bool {
+        access(all) view fun canWithdrawAmount(_ amount: UFix64): Bool {
             return amount + self.allowanceUsed <= self.allowance
         }
 
-        access(FungibleToken.Withdrawable) fun markAmountWithdrawn(_ amount: UFix64) {
+        access(FungibleToken.Withdraw) fun markAmountWithdrawn(_ amount: UFix64) {
             self.allowanceUsed = self.allowanceUsed + amount
         }
 
@@ -45,13 +45,13 @@ access(all) contract ScopedFTProviders {
     // A ScopedFTProvider is a wrapped FungibleTokenProvider with
     // filters that can be defined by anyone using the ScopedFTProvider.
     access(all) resource ScopedFTProvider: FungibleToken.Provider {
-        access(self) let provider: Capability<auth(FungibleToken.Withdrawable) &{FungibleToken.Provider}>
+        access(self) let provider: Capability<auth(FungibleToken.Withdraw) &{FungibleToken.Provider}>
         access(self) var filters: [{FTFilter}]
 
         // block timestamp that this provider can no longer be used after
         access(self) let expiration: UFix64?
 
-        access(all) init(provider: Capability<auth(FungibleToken.Withdrawable) &{FungibleToken.Provider}>, filters: [{FTFilter}], expiration: UFix64?) {
+        access(all) init(provider: Capability<auth(FungibleToken.Withdraw) &{FungibleToken.Provider}>, filters: [{FTFilter}], expiration: UFix64?) {
             self.provider = provider
             self.filters = filters
             self.expiration = expiration
@@ -68,7 +68,7 @@ access(all) contract ScopedFTProviders {
             return false
         }
 
-        access(all) fun canWithdraw(_ amount: UFix64): Bool {
+        access(all) view fun canWithdraw(_ amount: UFix64): Bool {
             if self.isExpired() {
                 return false
             }
@@ -82,7 +82,11 @@ access(all) contract ScopedFTProviders {
             return true
         }
 
-        access(FungibleToken.Withdrawable) fun withdraw(amount: UFix64): @{FungibleToken.Vault} {
+        access(all) view fun isAvailableToWithdraw(amount: UFix64): Bool {
+            return self.canWithdraw(amount)
+        }
+
+        access(FungibleToken.Withdraw | FungibleToken.Withdraw) fun withdraw(amount: UFix64): @{FungibleToken.Vault} {
             pre {
                 !self.isExpired(): "provider has expired"
             }
@@ -111,7 +115,7 @@ access(all) contract ScopedFTProviders {
     }
 
     access(all) fun createScopedFTProvider(
-        provider: Capability<auth(FungibleToken.Withdrawable) &{FungibleToken.Provider}>,
+        provider: Capability<auth(FungibleToken.Withdraw) &{FungibleToken.Provider}>,
         filters: [{FTFilter}],
         expiration: UFix64?
     ): @ScopedFTProvider {

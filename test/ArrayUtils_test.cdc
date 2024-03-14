@@ -56,7 +56,7 @@ fun testTransform() {
     ]
 
     // Act
-    ArrayUtils.transform(&tokens, fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
+    ArrayUtils.transform(&tokens as auth(Mutate) &[Token], fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
         let token = t as! &Token
         token.setBalance(token.balance * 2)
     })

@@ -1,1 +1,1 @@
-flow test --cover --covercode="contracts" test/*_test.cdc
+flow-c1 test --cover --covercode="contracts" test/*_test.cdc
