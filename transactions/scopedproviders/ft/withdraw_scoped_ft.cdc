@@ -5,7 +5,7 @@ import "ScopedFTProviders"
 
 transaction(allowance: UFix64, withdrawAmount: UFix64) {
     prepare(acct: auth(Storage, Capabilities) &Account) {
-        let cap = acct.capabilities.storage.issue<auth(FungibleToken.Withdrawable) &ExampleToken.Vault>(/storage/exampleTokenVault)
+        let cap = acct.capabilities.storage.issue<auth(FungibleToken.Withdraw) &ExampleToken.Vault>(/storage/exampleTokenVault)
         assert(cap.check(), message: "invalid private cap")
 
         let filter = ScopedFTProviders.AllowanceFilter(allowance)

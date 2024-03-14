@@ -5,7 +5,7 @@ import "ScopedNFTProviders"
 
 transaction(ids: [UInt64], withdrawID: UInt64) {
     prepare(acct: auth(Storage,Capabilities) &Account) {
-        let cap = acct.capabilities.storage.issue<auth(NonFungibleToken.Withdrawable) &ExampleNFT.Collection>(ExampleNFT.CollectionStoragePath)
+        let cap = acct.capabilities.storage.issue<auth(NonFungibleToken.Withdraw) &ExampleNFT.Collection>(ExampleNFT.CollectionStoragePath)
         assert(cap.check(), message: "invalid provider cap")
         
         let expiration = getCurrentBlock().timestamp - 1000.0
