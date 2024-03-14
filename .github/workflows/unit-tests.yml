@@ -25,4 +25,4 @@ jobs:
     - name: Install Flow CLI
       run: bash -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/feature/stable-cadence/install.sh)"
     - name: Run tests
-      run: flow test --cover --covercode="contracts" test/*_test.cdc
+      run: flow-c1 test --cover --covercode="contracts" test/*_test.cdc
