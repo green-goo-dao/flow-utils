@@ -59,7 +59,6 @@ access(all) contract AddressUtils {
             "MAINNET" : 0,
             "TESTNET" : 0x6834ba37b3980209,
             "PREVIEWNET" : 0x5211829E88528817,
-,
             "EMULATOR": 0x1cb159857af02018
         }
 
