@@ -58,7 +58,8 @@ access(all) contract AddressUtils {
         let codeWords: {String: UInt64} = {
             "MAINNET" : 0,
             "TESTNET" : 0x6834ba37b3980209,
-            "CRESCENDO" : 0x6834ba37b3980209,
+            "PREVIEWNET" : 0x5211829E88528817,
+,
             "EMULATOR": 0x1cb159857af02018
         }
 
@@ -92,7 +93,7 @@ access(all) contract AddressUtils {
     }
 
     access(all) fun getNetworkFromAddress(_ input: AnyStruct): String? {
-        for network in ["MAINNET", "TESTNET", "EMULATOR"] {
+        for network in ["MAINNET", "TESTNET", "EMULATOR", "PREVIEWNET"] {
             if self.isValidAddress(input, forNetwork: network){
                 return network
             }

@@ -102,7 +102,7 @@ access(all) contract ScopedNFTProviders {
                 return false
             }
 
-            let nft = self.provider.borrow()!.borrowNFT(id)
+            let nft = self.provider.borrow()?.borrowNFT(id)
             if nft == nil {
                 return false
             }
