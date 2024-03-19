@@ -16,7 +16,13 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: 1.20
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ^18
+    - name: Install Node Dependencies
+      run: npm i
     - name: Install Flow CLI
-      run: sh -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/install.sh)" -- v1.5.0
+      run: bash -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/feature/stable-cadence/install.sh)"
     - name: Run tests
-      run: flow test --cover --covercode="contracts" test/*_test.cdc
+      run: flow-c1 test --cover --covercode="contracts" test/*_test.cdc

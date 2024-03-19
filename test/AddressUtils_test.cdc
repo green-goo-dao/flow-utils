@@ -7,21 +7,21 @@ access(all)
 fun setup() {
     var err = Test.deployContract(
         name: "ArrayUtils",
-        path: "../cadence/contracts/ArrayUtils.cdc",
+        path: "../contracts/ArrayUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "StringUtils",
-        path: "../cadence/contracts/StringUtils.cdc",
+        path: "../contracts/StringUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "AddressUtils",
-        path: "../cadence/contracts/AddressUtils.cdc",
+        path: "../contracts/AddressUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
