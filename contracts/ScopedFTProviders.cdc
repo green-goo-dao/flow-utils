@@ -57,6 +57,10 @@ access(all) contract ScopedFTProviders {
             self.expiration = expiration
         }
 
+        access(all) fun getProviderType(): Type {
+            return self.provider.borrow()!.getType()
+        }
+
         access(all) fun check(): Bool {
             return self.provider.check()
         }
