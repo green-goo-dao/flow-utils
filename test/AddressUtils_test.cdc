@@ -99,9 +99,10 @@ fun testIsValidAddress() {
     let mainnet = AddressUtils.isValidAddress("0xa340dc0a4ec828ab", forNetwork: "MAINNET")
     let testnet = AddressUtils.isValidAddress("0x31ad40c07a2a9788", forNetwork: "TESTNET")
     let emulator = AddressUtils.isValidAddress("0xf8d6e0586b0a20c7", forNetwork: "EMULATOR")
+    let previewnet = AddressUtils.isValidAddress("0x30a71a4767f0e14f", forNetwork: "PREVIEWNET")
 
     // Assert
-    Test.assert(mainnet && testnet && emulator)
+    Test.assert(mainnet && testnet && emulator && previewnet)
 
     // Act
     var valid = AddressUtils.isValidAddress(1452, forNetwork: "EMULATOR")
