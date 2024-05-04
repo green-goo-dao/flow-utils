@@ -90,7 +90,7 @@ access(all) contract ScopedFTProviders {
             return self.canWithdraw(amount)
         }
 
-        access(FungibleToken.Withdraw | FungibleToken.Withdraw) fun withdraw(amount: UFix64): @{FungibleToken.Vault} {
+        access(FungibleToken.Withdraw) fun withdraw(amount: UFix64): @{FungibleToken.Vault} {
             pre {
                 !self.isExpired(): "provider has expired"
             }
