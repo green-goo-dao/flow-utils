@@ -78,7 +78,7 @@ access(all) contract ScopedNFTProviders {
     //
     // Wrapper around an NFT Provider that is restricted to specific ids.
     access(all) resource ScopedNFTProvider: NonFungibleToken.Provider {
-        access(self) let provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Collection}>
+        access(self) let provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
         access(self) let filters: [{NFTFilter}]
 
         // block timestamp that this provider can no longer be used after
@@ -91,7 +91,7 @@ access(all) contract ScopedNFTProviders {
             return false
         }
 
-        access(all) init(provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Collection}>, filters: [{NFTFilter}], expiration: UFix64?) {
+        access(all) init(provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>, filters: [{NFTFilter}], expiration: UFix64?) {
             self.provider = provider
             self.expiration = expiration
             self.filters = filters
@@ -157,7 +157,7 @@ access(all) contract ScopedNFTProviders {
     }
 
     access(all) fun createScopedNFTProvider(
-        provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Collection}>,
+        provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>,
         filters: [{NFTFilter}],
         expiration: UFix64?
     ): @ScopedNFTProvider {

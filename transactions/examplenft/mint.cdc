@@ -14,7 +14,7 @@ transaction(recipient: Address) {
     }
 
     execute {
-        let receiver = getAccount(recipient).capabilities.get<&{NonFungibleToken.Collection}>(ExampleNFT.CollectionPublicPath)!.borrow()!
+        let receiver = getAccount(recipient).capabilities.get<&{NonFungibleToken.Collection}>(ExampleNFT.CollectionPublicPath).borrow()!
         self.minter.mintNFT(recipient: receiver, name: "testname", description: "descr", thumbnail: "image.html", royaltyReceipient: self.minter.owner!.address)
     }
 }
