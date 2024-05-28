@@ -20,7 +20,7 @@ access(all)
 fun setup() {
     let err = Test.deployContract(
         name: "ArrayUtils",
-        path: "../cadence/contracts/ArrayUtils.cdc",
+        path: "../contracts/ArrayUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
@@ -49,17 +49,16 @@ fun testReverseRange() {
 access(all)
 fun testTransform() {
     // Arrange
-    let tokens = [
+    let tokens: [Token] = [
         Token(id: 0, balance: 10),
         Token(id: 1, balance: 5),
         Token(id: 2, balance: 15)
     ]
 
     // Act
-    ArrayUtils.transform(&tokens as &[AnyStruct], fun (t: AnyStruct): AnyStruct {
-        var token = t as! Token
+    ArrayUtils.transform(&tokens as auth(Mutate) &[Token], fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
+        let token = t as! &Token
         token.setBalance(token.balance * 2)
-        return token
     })
 
     // Assert

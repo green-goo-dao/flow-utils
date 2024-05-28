@@ -9,28 +9,28 @@ access(all)
 fun setup() {
     var err = Test.deployContract(
         name: "ArrayUtils",
-        path: "../cadence/contracts/ArrayUtils.cdc",
+        path: "../contracts/ArrayUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "StringUtils",
-        path: "../cadence/contracts/StringUtils.cdc",
+        path: "../contracts/StringUtils.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "ExampleNFT",
-        path: "../cadence/contracts/ExampleNFT.cdc",
+        path: "../node_modules/@flowtyio/flow-contracts/contracts/example/ExampleNFT.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
 
     err = Test.deployContract(
         name: "ScopedNFTProviders",
-        path: "../cadence/contracts/ScopedNFTProviders.cdc",
+        path: "../contracts/ScopedNFTProviders.cdc",
         arguments: []
     )
     Test.expect(err, Test.beNil())
@@ -39,7 +39,7 @@ fun setup() {
 access(all)
 fun beforeEach() {
     let txResult = executeTransaction(
-        "../cadence/transactions/examplenft/destroy.cdc",
+        "../transactions/examplenft/destroy.cdc",
         [],
         alice
     )
@@ -53,15 +53,15 @@ fun testWithdrawNFTSuccessfully() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
         [ids, id],
         alice
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleNFT.Withdraw>())
-    let event = events[events.length - 1] as! ExampleNFT.Withdraw
-    Test.assertEqual(event.id, id)
+    let e = events[events.length - 1] as! ExampleNFT.Withdraw
+    Test.assertEqual(e.id, id)
 }
 
 access(all)
@@ -71,15 +71,15 @@ fun testWithdrawNFTSuccessfullyBeforeExpiration() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft_before_expiration.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft_before_expiration.cdc",
         [ids, id],
         alice
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleNFT.Withdraw>())
-    let event = events[events.length - 1] as! ExampleNFT.Withdraw
-    Test.assertEqual(event.id, id)
+    let e = events[events.length - 1] as! ExampleNFT.Withdraw
+    Test.assertEqual(e.id, id)
 }
 
 access(all)
@@ -90,7 +90,7 @@ fun testFailsToWithdrawNFT() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
         [ids, id2],
         alice
     )
@@ -108,7 +108,7 @@ fun testFailsToWithdrawNFTPastExpiration() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft_past_expiration.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft_past_expiration.cdc",
         [ids, id],
         alice
     )
@@ -126,15 +126,15 @@ fun testShouldWithdrawSuccessfully() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft.cdc",
         [ids, id],
         alice
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleNFT.Withdraw>())
-    let event = events[events.length - 1] as! ExampleNFT.Withdraw
-    Test.assertEqual(event.id, id)
+    let e = events[events.length - 1] as! ExampleNFT.Withdraw
+    Test.assertEqual(e.id, id)
 }
 
 access(all)
@@ -144,7 +144,7 @@ fun testFailsToWithdrawTwice() {
     let ids: [UInt64] = [id]
 
     let txResult = executeTransaction(
-        "../cadence/transactions/scopedproviders/nft/withdraw_scoped_nft_twice.cdc",
+        "../transactions/scopedproviders/nft/withdraw_scoped_nft_twice.cdc",
         [ids, id],
         alice
     )
@@ -156,9 +156,9 @@ fun testFailsToWithdrawTwice() {
 }
 
 access(self)
-fun setupExampleNFT(account: Test.Account) {
+fun setupExampleNFT(account: Test.TestAccount) {
     let txResult = executeTransaction(
-        "../cadence/transactions/examplenft/setup.cdc",
+        "../transactions/examplenft/setup.cdc",
         [],
         account
     )
@@ -166,15 +166,15 @@ fun setupExampleNFT(account: Test.Account) {
 }
 
 access(self)
-fun mintExampleNFT(recipient: Test.Account): UInt64 {
+fun mintExampleNFT(recipient: Test.TestAccount): UInt64 {
     let txResult = executeTransaction(
-        "../cadence/transactions/examplenft/mint.cdc",
+        "../transactions/examplenft/mint.cdc",
         [recipient.address],
         admin
     )
     Test.expect(txResult, Test.beSucceeded())
 
     let events = Test.eventsOfType(Type<ExampleNFT.Deposit>())
-    let event = events[events.length - 1] as! ExampleNFT.Deposit
-    return event.id
+    let e = events[events.length - 1] as! ExampleNFT.Deposit
+    return e.id
 }

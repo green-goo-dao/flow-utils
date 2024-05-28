@@ -7,69 +7,110 @@
   },
   "contracts": {
     "ArrayUtils": {
-      "source": "./cadence/contracts/ArrayUtils.cdc",
+      "source": "./contracts/ArrayUtils.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
     },
     "StringUtils": {
-      "source": "./cadence/contracts/StringUtils.cdc",
+      "source": "./contracts/StringUtils.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
     },
     "AddressUtils": {
-      "source": "./cadence/contracts/AddressUtils.cdc",
+      "source": "./contracts/AddressUtils.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
     },
     "ScopedNFTProviders": {
-      "source": "./cadence/contracts/ScopedNFTProviders.cdc",
+      "source": "./contracts/ScopedNFTProviders.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
     },
     "ScopedFTProviders": {
-      "source": "./cadence/contracts/ScopedFTProviders.cdc",
+      "source": "./contracts/ScopedFTProviders.cdc",
       "aliases": {
         "testing": "0x0000000000000007"
       }
     },
-    "FungibleToken": {
-      "source": "./cadence/contracts/FungibleToken.cdc",
+    "FungibleTokenMetadataViews": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/FungibleTokenMetadataViews.cdc",
       "aliases": {
         "emulator": "0xee82856bf20e2aa6",
         "testnet": "0x9a0766d93b6608b7",
-        "mainnet": "0xf233dcee88fe0abe"
+        "mainnet": "0xf233dcee88fe0abe",
+        "previewnet" :"0xa0225e7000ac82a9"
+      }
+    },
+    "FlowToken": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/FlowToken.cdc",
+      "aliases": {
+        "emulator": "0x0ae53cb6e3f42a79",
+        "testnet": "0x7e60df042a9c0868",
+        "mainnet": "0x1654653399040a61",
+        "previewnet": "0x4445e7ad11568276"
+      }
+    },
+    "ViewResolver": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/ViewResolver.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x631e88ae7f1d7c20",
+        "mainnet": "0x1d7e57aa55817448",
+        "previewnet": "0xb6763b4399a888c8"
+      }
+    },
+    "FungibleToken": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/FungibleToken.cdc",
+      "aliases": {
+        "emulator": "0xee82856bf20e2aa6",
+        "testnet": "0x9a0766d93b6608b7",
+        "mainnet": "0xf233dcee88fe0abe",
+        "previewnet": "0xa0225e7000ac82a9"
       }
     },
     "NonFungibleToken": {
-      "source": "./cadence/contracts/NonFungibleToken.cdc",
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/NonFungibleToken.cdc",
       "aliases": {
         "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x631e88ae7f1d7c20",
-        "mainnet": "0x1d7e57aa55817448"
+        "mainnet": "0x1d7e57aa55817448",
+        "previewnet": "0xb6763b4399a888c8"
       }
     },
     "MetadataViews": {
-      "source": "./cadence/contracts/MetadataViews.cdc",
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/MetadataViews.cdc",
       "aliases": {
         "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x631e88ae7f1d7c20",
-        "mainnet": "0x1d7e57aa55817448"
-      }
-    },
-    "ExampleNFT": {
-      "source": "./cadence/contracts/ExampleNFT.cdc",
-      "aliases": {
-        "testing": "0x0000000000000007"
+        "mainnet": "0x1d7e57aa55817448",
+        "previewnet" : "0xb6763b4399a888c8"
       }
     },
     "ExampleToken": {
-      "source": "./cadence/contracts/ExampleToken.cdc",
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/example/ExampleToken.cdc",
       "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
         "testing": "0x0000000000000007"
+      }
+    },
+    "ExampleNFT": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/example/ExampleNFT.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testing": "0x0000000000000007"
+      }
+    },
+    "Burner": {
+      "source": "./node_modules/@flowtyio/flow-contracts/contracts/Burner.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x631e88ae7f1d7c20",
+        "mainnet": "0x1d7e57aa55817448",
+        "previewnet":"0xb6763b4399a888c8"
       }
     }
   },
@@ -77,7 +118,8 @@
     "emulator": "127.0.0.1:3569",
     "testing": "127.0.0.1:3569",
     "mainnet": "access.mainnet.nodes.onflow.org:9000",
-    "testnet": "access.devnet.nodes.onflow.org:9000"
+    "testnet": "access.devnet.nodes.onflow.org:9000",
+    "previewnet": "access.previewnet.nodes.onflow.org:9000"
   },
   "accounts": {
     "emulator-account": {
@@ -103,6 +145,14 @@
         "hashAlgorithm": "SHA2_256",
         "resourceID": "projects/flow-utils/locations/global/keyRings/contract/cryptoKeys/mainnet/cryptoKeyVersions/1"
       }
+    },
+    "emulator-ft": {
+      "address": "ee82856bf20e2aa6",
+      "key": "f2e846bd4c1fbf17839ae59e111c6b1c98579eda7a841412f102d6621ec671cb"
+    },
+    "emulator-flowtoken": {
+      "address": "0ae53cb6e3f42a79",
+      "key": "f2e846bd4c1fbf17839ae59e111c6b1c98579eda7a841412f102d6621ec671cb"
     }
   },
   "deployments": {
@@ -116,7 +166,16 @@
         "ExampleNFT",
         "ExampleToken",
         "ScopedNFTProviders",
-        "ScopedFTProviders"
+        "ScopedFTProviders",
+        "ViewResolver",
+        "Burner"
+      ],
+      "emulator-ft": [
+        "FungibleToken",
+        "FungibleTokenMetadataViews"
+      ],
+      "emulator-flowtoken": [
+        "FlowToken"
       ]
     },
     "testnet": {
