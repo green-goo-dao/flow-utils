@@ -37,12 +37,52 @@ fun testRange() {
 }
 
 access(all)
+fun testRangeZero() {
+    // Act
+    let range = ArrayUtils.range(0, 0)
+
+    // Assert
+    let expected: [Int] = []
+    Test.assertEqual(expected, range)
+}
+
+access(all)
+fun testRangeNegative() {
+    // Act
+    let range = ArrayUtils.range(-2, 2)
+
+    // Assert
+    let expected: [Int] = [-2, -1, 0, 1]
+    Test.assertEqual(expected, range)
+}
+
+access(all)
+fun testRangeEndSmaller() {
+    // Act
+    let range = ArrayUtils.range(2, -2)
+
+    // Assert
+    let expected: [Int] = []
+    Test.assertEqual(expected, range)
+}
+
+access(all)
 fun testReverseRange() {
     // Act
     let range = ArrayUtils.reverse(ArrayUtils.range(0, 10))
 
     // Assert
     let expected: [Int] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    Test.assertEqual(expected, range)
+}
+
+access(all)
+fun testReverseEmpty() {
+    // Act
+    let range = ArrayUtils.reverse([])
+
+    // Assert
+    let expected: [Int] = []
     Test.assertEqual(expected, range)
 }
 
@@ -56,10 +96,13 @@ fun testTransform() {
     ]
 
     // Act
-    ArrayUtils.transform(&tokens as auth(Mutate) &[Token], fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
-        let token = t as! &Token
-        token.setBalance(token.balance * 2)
-    })
+    ArrayUtils.transform(
+        &tokens as auth(Mutate) &[Token],
+        fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
+            let token = t as! &Token
+            token.setBalance(token.balance * 2)
+        }
+    )
 
     // Assert
     let expected = [
@@ -68,6 +111,24 @@ fun testTransform() {
         Token(id: 2, balance: 30)
     ]
     Test.assertEqual(expected, tokens)
+}
+
+access(all)
+fun testTransformEmpty() {
+    // Arrange
+    let values: [Int] = []
+
+    // Act
+    ArrayUtils.transform(
+        &values as auth(Mutate) &[Int],
+        fun (t: &AnyStruct, arr: auth(Mutate) &[AnyStruct], index: Int) {
+            panic("unreachable")
+        }
+    )
+
+    // Assert
+    let expected: [Int] = []
+    Test.assertEqual(expected, values)
 }
 
 access(all)
@@ -83,17 +144,41 @@ fun testIterate() {
 
     // Act
     var totalBalance = 0
-    ArrayUtils.iterate(tokens, fun (t: AnyStruct): Bool {
-        var token = t as! Token
-        if token.id <= 2 {
-            totalBalance = totalBalance + token.balance
-            return true
+    ArrayUtils.iterate(
+        tokens,
+        fun (t: AnyStruct): Bool {
+            let token = t as! Token
+            if token.id <= 2 {
+                totalBalance = totalBalance + token.balance
+                return true
+            }
+            return false
         }
-        return false
-    })
+    )
 
+    // Assert
     Test.assertEqual(30, totalBalance)
 }
+
+
+access(all)
+fun testIterateEmpty() {
+    // Arrange
+    let values: [Int] = []
+
+    // Act
+    ArrayUtils.iterate(
+        values,
+        fun (t: AnyStruct): Bool {
+            panic("unreachable")
+        }
+    )
+
+    // Assert
+    let expected: [Int] = []
+    Test.assertEqual(expected, values)
+}
+
 
 access(all)
 fun testMap() {
@@ -105,11 +190,14 @@ fun testMap() {
     ]
 
     // Act
-    let mapped = ArrayUtils.map(tokens, fun (t: AnyStruct): AnyStruct {
-        var token = t as! Token
-        token.setBalance(token.balance - 2)
-        return token
-    })
+    let mapped = ArrayUtils.map(
+        tokens,
+        fun (t: AnyStruct): AnyStruct {
+            let token = t as! Token
+            token.setBalance(token.balance - 2)
+            return token
+        }
+    )
 
     // Assert
     let expected: [AnyStruct] = [
@@ -117,6 +205,24 @@ fun testMap() {
         Token(id: 1, balance: 3),
         Token(id: 2, balance: 13)
     ]
+    Test.assertEqual(expected, mapped)
+}
+
+access(all)
+fun testMapEmpty() {
+    // Arrange
+    let values: [Int] = []
+
+    // Act
+    let mapped = ArrayUtils.map(
+        values,
+        fun (t: AnyStruct): AnyStruct {
+            panic("unreachable")
+        }
+    )
+
+    // Assert
+    let expected: [AnyStruct] = []
     Test.assertEqual(expected, mapped)
 }
 
@@ -140,6 +246,24 @@ fun testMapStrings() {
 }
 
 access(all)
+fun testMapStringsEmpty() {
+    // Arrange
+    let strings: [String] = []
+
+    // Act
+    let mapped = ArrayUtils.mapStrings(
+        strings,
+        fun (s: String): String {
+            panic("unreachable")
+        }
+    )
+
+    // Assert
+    let expected: [String] = []
+    Test.assertEqual(expected, mapped)
+}
+
+access(all)
 fun testReduce() {
     // Arrange
     let tokens = [
@@ -150,13 +274,66 @@ fun testReduce() {
     let initial = Token(id: 5, balance: 0)
 
     // Act
-    let token = ArrayUtils.reduce(tokens, initial, fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
-        var token = t as! Token
-        var accToken = acc as! Token
-        accToken.setBalance(accToken.balance + token.balance)
-        return accToken
-    })
+    let token = ArrayUtils.reduce(
+        tokens,
+        initial,
+        fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
+            let token = t as! Token
+            let accToken = acc as! Token
+            accToken.setBalance(accToken.balance + token.balance)
+            return accToken
+        }
+    )
 
     // Assert
     Test.assertEqual(30, (token as! Token).balance)
+}
+
+access(all)
+fun testReduceEmpty() {
+    // Arrange
+    let initial = 42
+
+    // Act
+    let res = ArrayUtils.reduce(
+        [],
+        initial,
+        fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
+            panic("unreachable")
+        }
+    )
+
+    // Assert
+    Test.assertEqual(initial, res)
+}
+
+access(all)
+fun testReduceOne() {
+    // Act
+    let res = ArrayUtils.reduce(
+        [2],
+        1,
+        fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
+            return (acc as! Int) + (t as! Int)
+        }
+    )
+
+    // Assert
+    Test.assertEqual(3, res)
+}
+
+
+access(all)
+fun testReduceTwo() {
+    // Act
+    let res = ArrayUtils.reduce(
+        [2, 3],
+        1,
+        fun (acc: AnyStruct, t: AnyStruct): AnyStruct {
+            return (acc as! Int) + (t as! Int)
+        }
+    )
+
+    // Assert
+    Test.assertEqual(6, res)
 }

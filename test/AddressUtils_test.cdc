@@ -28,116 +28,139 @@ fun setup() {
 }
 
 access(all)
-fun testWithoutPrefix() {
+fun testWithoutPrefixEvenLength() {
     // Act
-    var address = AddressUtils.withoutPrefix("0xf8d6e0586b0a20c7")
+    let address = AddressUtils.withoutPrefix("0xf8d6e0586b0a20c7")
 
     // Assert
     Test.assertEqual("f8d6e0586b0a20c7", address)
+}
 
+
+access(all)
+fun testWithoutPrefixOddLength() {
     // Act
-    // Odd length
-    address = AddressUtils.withoutPrefix("8d6e0586b0a20c7")
+    let address = AddressUtils.withoutPrefix("8d6e0586b0a20c7")
 
     // Assert
     Test.assertEqual("08d6e0586b0a20c7", address)
 }
 
 access(all)
-fun testParseUInt64() {
+fun testParseUInt64HexString() {
     // Act
     var address = AddressUtils.parseUInt64("0xf8d6e0586b0a20c7")
 
     // Assert
     Test.assertEqual(17930765636779778247 as UInt64?, address)
+}
 
+access(all)
+fun testParseUInt64Address() {
     // Act
-    address = AddressUtils.parseUInt64(Address(0xf8d6e0586b0a20c7))
+    let address = AddressUtils.parseUInt64(Address(0xf8d6e0586b0a20c7))
 
     // Assert
     Test.assertEqual(17930765636779778247 as UInt64?, address)
+}
+
+access(all)
+fun testParseUInt64Type() {
 
     // Act
     // In the testing framework, the FlowToken address is:
     // 0x0000000000000003
-    address = AddressUtils.parseUInt64(FlowToken.getType())
+    let address = AddressUtils.parseUInt64(FlowToken.getType())
 
     // Assert
     Test.assertEqual(3 as UInt64?, address)
+}
 
+access(all)
+fun testParseUInt64HexInteger() {
     // Act
-    address = AddressUtils.parseUInt64(0x01)
-
-    // Assert
-    Test.assertEqual(nil, address)
-
-    // Act
-    address = AddressUtils.parseUInt64("hello".getType())
+    let address = AddressUtils.parseUInt64(0x01)
 
     // Assert
     Test.assertEqual(nil, address)
 }
 
 access(all)
-fun testParseAddress() {
-    // Act
-    var address = AddressUtils.parseAddress("0xf8d6e0586b0a20c7")
-
-    // Assert
-    Test.assertEqual(Address(0xf8d6e0586b0a20c7), address!)
+fun testParseUInt64String() {
 
     // Act
-    address = AddressUtils.parseAddress(1005)
+    let address = AddressUtils.parseUInt64("hello".getType())
 
     // Assert
     Test.assertEqual(nil, address)
 }
 
 access(all)
-fun testIsValidAddress() {
+fun testParseAddressValid() {
     // Act
-    let mainnet = AddressUtils.isValidAddress("0xa340dc0a4ec828ab", forNetwork: "MAINNET")
-    let testnet = AddressUtils.isValidAddress("0x31ad40c07a2a9788", forNetwork: "TESTNET")
-    let emulator = AddressUtils.isValidAddress("0xf8d6e0586b0a20c7", forNetwork: "EMULATOR")
+    let address = AddressUtils.parseAddress("0xf8d6e0586b0a20c7")
 
     // Assert
-    Test.assert(mainnet && testnet && emulator)
-
-    // Act
-    var valid = AddressUtils.isValidAddress(1452, forNetwork: "EMULATOR")
-
-    // Assert
-    Test.assertEqual(false, valid)
-
-    // Act
-    valid = AddressUtils.isValidAddress("0x6834ba37b3980209", forNetwork: "TESTNET")
-
-    // Assert
-    Test.assertEqual(false, valid)
+    Test.assertEqual(0xf8d6e0586b0a20c7 as Address?, address)
 }
 
 access(all)
-fun testGetNetworkFromAddress() {
+fun testParseAddressInvalid() {
+    // Act
+    let address = AddressUtils.parseAddress(1005)
+
+    // Assert
+    Test.assertEqual(nil, address)
+}
+
+access(all)
+fun testIsValidAddressValid() {
+    Test.assert(AddressUtils.isValidAddress("0xa340dc0a4ec828ab", forNetwork: "MAINNET"))
+    Test.assert(AddressUtils.isValidAddress("0x31ad40c07a2a9788", forNetwork: "TESTNET"))
+    Test.assert(AddressUtils.isValidAddress("0xf8d6e0586b0a20c7", forNetwork: "EMULATOR"))
+}
+
+access(all)
+fun testIsValidAddressInvalidEmulator() {
+    Test.assert(!AddressUtils.isValidAddress(1452, forNetwork: "EMULATOR"))
+}
+
+access(all)
+fun testIsValidAddressInvalidTestnet() {
+    Test.assert(!AddressUtils.isValidAddress("0x6834ba37b3980209", forNetwork: "TESTNET"))
+}
+
+access(all)
+fun testGetNetworkFromAddressInvalid() {
     // Act
     var network = AddressUtils.getNetworkFromAddress(1541)
 
     // Assert
     Test.assertEqual(nil, network)
+}
 
+access(all)
+fun testGetNetworkFromAddressEmulator() {
     // Act
-    network = AddressUtils.getNetworkFromAddress("0xf8d6e0586b0a20c7")
+    let network = AddressUtils.getNetworkFromAddress("0xf8d6e0586b0a20c7")
 
     // Assert
     Test.assertEqual("EMULATOR" as String?, network)
+}
 
+access(all)
+fun testGetNetworkFromAddressTestnet() {
     // Act
-    network = AddressUtils.getNetworkFromAddress("0x31ad40c07a2a9788")
+    let network = AddressUtils.getNetworkFromAddress("0x31ad40c07a2a9788")
 
     // Assert
     Test.assertEqual("TESTNET" as String?, network)
+}
 
+access(all)
+fun testGetNetworkFromAddressMainnet() {
     // Act
-    network = AddressUtils.getNetworkFromAddress("0xa340dc0a4ec828ab")
+    let network = AddressUtils.getNetworkFromAddress("0xa340dc0a4ec828ab")
 
     // Assert
     Test.assertEqual("MAINNET" as String?, network)
@@ -145,7 +168,10 @@ fun testGetNetworkFromAddress() {
 
 access(all)
 fun testGetCurrentNetwork() {
-    Test.expectFailure(fun(): Void {
-        AddressUtils.currentNetwork()
-    }, errorMessageSubstring: "unknown network!")
+    Test.expectFailure(
+        fun() {
+            let network = AddressUtils.currentNetwork()
+        },
+        errorMessageSubstring: "unknown network!"
+    )
 }
