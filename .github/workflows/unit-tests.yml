@@ -23,6 +23,6 @@ jobs:
     - name: Install Node Dependencies
       run: npm i
     - name: Install Flow CLI
-      run: bash -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/feature/stable-cadence/install.sh)"
+      run: bash -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/install.sh)"
     - name: Run tests
-      run: flow-c1 test --cover --covercode="contracts" test/*_test.cdc
+      run: flow test --cover --covercode="contracts" test/*_test.cdc
