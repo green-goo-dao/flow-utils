@@ -19,14 +19,7 @@ access(all) contract ArrayUtils {
     }
 
     access(all) fun reverse(_ array: [Int]): [Int] {
-        var res: [Int] = []
-        let length = array.length
-        if length > 0 {
-            for i in InclusiveRange(length - 1, 0) {
-                res.append(array[i])
-            }
-        }
-        return res
+        return array.reverse()
     }
 
     access(all) fun transform(
@@ -50,19 +43,11 @@ access(all) contract ArrayUtils {
     }
 
     access(all) fun map(_ array: [AnyStruct], _ f: fun (AnyStruct): AnyStruct): [AnyStruct] {
-        var res: [AnyStruct] = []
-        for item in array {
-            res.append(f(item))
-        }
-        return res
+        return array.map(f)
     }
 
     access(all) fun mapStrings(_ array: [String], _ f: fun (String): String): [String] {
-        var res: [String] = []
-        for item in array {
-            res.append(f(item))
-        }
-        return res
+        return array.map(f)
     }
 
     access(all) fun reduce(_
